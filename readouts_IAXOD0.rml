@@ -10,7 +10,7 @@
 
 <!-- Updated definition of IAXOD0 readout for final setup - Origin centered-->
 
-<TRestReadout name="IAXOD0_Readout" title="IAXOD0 readout final setup" >
+<TRestDetectorReadout name="IAXOD0_Readout" title="IAXOD0 readout final setup" >
     <myParameter name="nChannels" value="120" />
     <myParameter name="nModules" value="1" />
     <myParameter name="pitch" value="0.5" />
@@ -53,11 +53,11 @@
 
     </readoutPlane>
 
-</TRestReadout>
+</TRestDetectorReadout>
 
 <!-- Updated definition of IAXOD0 readout for final setup -->
 
-<TRestReadout name="IAXOD0_Readout_notcen" title="IAXOD0 readout final setup" >
+<TRestDetectorReadout name="IAXOD0_Readout_notcen" title="IAXOD0 readout final setup" >
     <myParameter name="nChannels" value="120" />
     <myParameter name="nModules" value="1" />
     <myParameter name="pitch" value="0.5" />
@@ -103,11 +103,11 @@
 
     </readoutPlane>
 
-</TRestReadout>
+</TRestDetectorReadout>
 
 <!-- Updated definition of IAXOD0 readout (with 0123 decoding) -->
 
-<TRestReadout name="IAXOD0_Readout_0123" title="IAXOD0 readout with 0123 decoding" >
+<TRestDetectorReadout name="IAXOD0_Readout_0123" title="IAXOD0 readout with 0123 decoding" >
     <myParameter name="nChannels" value="120" />
     <myParameter name="nModules" value="1" />
     <myParameter name="pitch" value="0.5" />
@@ -153,11 +153,11 @@
 
     </readoutPlane>
 
-</TRestReadout>
+</TRestDetectorReadout>
 
 <!-- Updated definition of IAXOD0 readout (with 1032 decoding) -->
 
-<TRestReadout name="IAXOD0_Readout_1032" title="IAXOD0 readout with 1032 decoding" >
+<TRestDetectorReadout name="IAXOD0_Readout_1032" title="IAXOD0 readout with 1032 decoding" >
     <myParameter name="nChannels" value="120" />
     <myParameter name="nModules" value="1" />
     <myParameter name="pitch" value="0.5" />
@@ -203,11 +203,11 @@
 
     </readoutPlane>
 
-</TRestReadout>
+</TRestDetectorReadout>
 
 <!-- Old definition of IAXOD0 readout -->
 
-<TRestReadout name="Readout_IAXOD0_v1" title="IAXOD0 readout old" >
+<TRestDetectorReadout name="Readout_IAXOD0_v1" title="IAXOD0 readout old" >
     <myParameter name="nChannels" value="120" />
     <myParameter name="nModules" value="1" />
     <myParameter name="pitch" value="0.5" />
@@ -253,7 +253,7 @@
         </for>
     </readoutPlane>
 
-</TRestReadout>
+</TRestDetectorReadout>
 
         <!--<for variable="nModX" from="1" to="nModules" step="1" />
             <for variable="nModY" from="1" to="nModules" step="1" />
