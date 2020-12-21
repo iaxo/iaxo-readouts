@@ -1,14 +1,14 @@
 # How to generate the readout
 
-The readouts are defined in a RML file, in this case in `readouts_IAXOD0.rml`. This file contains definitions for multiple readouts which correspond to the section called `TRestReadout` with name given by the field `name`.
+The readouts are defined in a RML file, in this case in `readouts_IAXOD0.rml`. This file contains definitions for multiple readouts which correspond to the section called `TRestDetectorReadout` with name given by the field `name`.
 
 In order to generate the `readout.root` file follow this instructions. We use a RML file called `readouts_IAXOD0.rml` which contains the readout named `IAXOD0_Readout`.
 
 * Open a ROOT prompt and load REST libraries (type `restRoot`).
 
-* From the ROOT shell create a new `TRestReadout` object referencing the RML file and the `name` of the readout to use 
+* From the ROOT shell create a new `TRestDetectorReadout` object referencing the RML file and the `name` of the readout to use 
 
-```TRestReadout *readout = new TRestReadout("readouts_IAXOD0.rml", "IAXOD0_Readout")```.
+```TRestDetectorReadout *readout = new TRestDetectorReadout("readouts_IAXOD0.rml", "IAXOD0_Readout")```.
 
 * Create a ROOT file to save the readout into
 
