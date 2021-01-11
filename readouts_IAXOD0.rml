@@ -11,12 +11,12 @@
 <!-- Updated definition of IAXOD0 readout for final setup - Origin centered-->
 
 <TRestDetectorReadout name="IAXOD0_Readout" title="IAXOD0 readout final setup" >
-    <myParameter name="nChannels" value="120" />
-    <myParameter name="nModules" value="1" />
-    <myParameter name="pitch" value="0.5" />
-    <myParameter name="pixelSize" value="0.5/sqrt(2.)" />
-    <myParameter name="offset" value="0" />
-    <myParameter name="extraside" value="0.125" />
+    <constant name="nChannels" value="120" />
+    <constant name="nModules" value="1" />
+    <constant name="pitch" value="0.5" />
+    <constant name="pixelSize" value="0.5/sqrt(2.)" />
+    <constant name="offset" value="0" />
+    <constant name="extraside" value="0.125" />
 
     <parameter name="mappingNodes" value="0" />
 
@@ -58,12 +58,12 @@
 <!-- Updated definition of IAXOD0 readout for final setup -->
 
 <TRestDetectorReadout name="IAXOD0_Readout_notcen" title="IAXOD0 readout final setup" >
-    <myParameter name="nChannels" value="120" />
-    <myParameter name="nModules" value="1" />
-    <myParameter name="pitch" value="0.5" />
-    <myParameter name="pixelSize" value="0.5/sqrt(2.)" />
-    <myParameter name="offset" value="0" />
-    <myParameter name="extraside" value="0.125" />
+    <constant name="nChannels" value="120" />
+    <constant name="nModules" value="1" />
+    <constant name="pitch" value="0.5" />
+    <constant name="pixelSize" value="0.5/sqrt(2.)" />
+    <constant name="offset" value="0" />
+    <constant name="extraside" value="0.125" />
 
     <parameter name="mappingNodes" value="0" />
 
@@ -108,12 +108,12 @@
 <!-- Updated definition of IAXOD0 readout (with 0123 decoding) -->
 
 <TRestDetectorReadout name="IAXOD0_Readout_0123" title="IAXOD0 readout with 0123 decoding" >
-    <myParameter name="nChannels" value="120" />
-    <myParameter name="nModules" value="1" />
-    <myParameter name="pitch" value="0.5" />
-    <myParameter name="pixelSize" value="0.5/sqrt(2.)" />
-    <myParameter name="offset" value="0" />
-    <myParameter name="extraside" value="0.125" />
+    <constant name="nChannels" value="120" />
+    <constant name="nModules" value="1" />
+    <constant name="pitch" value="0.5" />
+    <constant name="pixelSize" value="0.5/sqrt(2.)" />
+    <constant name="offset" value="0" />
+    <constant name="extraside" value="0.125" />
 
     <parameter name="mappingNodes" value="0" />
 
@@ -158,12 +158,12 @@
 <!-- Updated definition of IAXOD0 readout (with 1032 decoding) -->
 
 <TRestDetectorReadout name="IAXOD0_Readout_1032" title="IAXOD0 readout with 1032 decoding" >
-    <myParameter name="nChannels" value="120" />
-    <myParameter name="nModules" value="1" />
-    <myParameter name="pitch" value="0.5" />
-    <myParameter name="pixelSize" value="0.5/sqrt(2.)" />
-    <myParameter name="offset" value="0" />
-    <myParameter name="extraside" value="0.125" />
+    <constant name="nChannels" value="120" />
+    <constant name="nModules" value="1" />
+    <constant name="pitch" value="0.5" />
+    <constant name="pixelSize" value="0.5/sqrt(2.)" />
+    <constant name="offset" value="0" />
+    <constant name="extraside" value="0.125" />
 
     <parameter name="mappingNodes" value="0" />
 
@@ -208,11 +208,11 @@
 <!-- Old definition of IAXOD0 readout -->
 
 <TRestDetectorReadout name="Readout_IAXOD0_v1" title="IAXOD0 readout old" >
-    <myParameter name="nChannels" value="120" />
-    <myParameter name="nModules" value="1" />
-    <myParameter name="pitch" value="0.5" />
-    <myParameter name="pixelSize" value="0.5/sqrt(2.)" />
-    <myParameter name="offset" value="0" />
+    <constant name="nChannels" value="120" />
+    <constant name="nModules" value="1" />
+    <constant name="pitch" value="0.5" />
+    <constant name="pixelSize" value="0.5/sqrt(2.)" />
+    <constant name="offset" value="0" />
 
     <parameter name="mappingNodes" value="0" />
 
