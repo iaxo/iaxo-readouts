@@ -14,7 +14,7 @@ In order to generate the `readout.root` file follow this instructions. We use a 
 
 ```TFile *f = new TFile("readouts.root", "RECREATE")```.
 
-* Save the readout with a name of our choice which will be used to reference this readout inside the file (in this case "iaxo_readout"). One can create multiple readouts and save them all to the same file, then we can choose to load the one we need
+* Save the readout with a name of our choice which will be used to reference this readout inside the file (in this case "iaxo_readout"). One can create multiple readouts and save them all to the same, then we can choose to load the one we need. To add a new readout to an existing readouts.root file, use the option "UPDATE" instead of "RECREATE".
 
 ```readout->Write("iaxo_readout")```.
 

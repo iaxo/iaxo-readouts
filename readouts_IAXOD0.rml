@@ -1,270 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-
+<?xml version="1.0" ?>
 <readouts>
+    <globals>
+        <!-- The pitch value in mm -->
+        <variable name="PITCH" value="0.50" overwrite="false" />
+        <!-- The number of modules per axis MxM -->
+        <variable name="N_MODULES" value="1" overwrite="false" />
 
-<globals>
-    <variable name="PITCH" value="0.5" overwrite="false" /> <!-- The pitch value in mm -->
-    <variable name="MODULES" value="0" overwrite="false" /> <!-- The number of modules per axis MxM -->
-    <variable name="CHANNELS" value="10" overwrite="false" /> <!-- The number of pixels per side PxP -->
-</globals>
+        <!-- The number of pixels per side PxP -->
+        <variable name="N_CHANNELS" value="120" overwrite="false" />
+    </globals>
 
-<!-- Updated definition of IAXOD0 readout for final setup - Origin centered-->
+    <TRestReadout name="iaxo_readout" title="IAXO-D0 readout ${PITCH} mm-Pitch ${N_CHANNELS}+${N_CHANNELS} channels">
 
-<TRestDetectorReadout name="IAXOD0_Readout" title="IAXOD0 readout final setup" >
-    <constant name="nChannels" value="120" />
-    <constant name="nModules" value="1" />
-    <constant name="pitch" value="0.5" />
-    <constant name="pixelSize" value="0.5/sqrt(2.)" />
-    <constant name="offset" value="0" />
-    <constant name="extraside" value="0.125" />
+        <constant name="pitch" value="${PITCH}" overwrite="false" />
+        <!-- The number of modules per axis MxM -->
+        <constant name="nModules" value="${N_MODULES}" overwrite="false" />
 
-    <parameter name="mappingNodes" value="0" />
+        <!-- The number of pixels per side PxP -->
+        <constant name="nChannels" value="${N_CHANNELS}" overwrite="false" />
+        <constant name="pixelSize" value="${PITCH}/sqrt(2.)" />
 
-    <!-- <readoutModule id="${mod}" plane="0" origin="(0.,-pitch*nChannels/sqrt(2.)-pixelSize/2.)" rotation="45" size="(pitch*nChannels+pitch,pitch*nChannels+pitch/2.)" > -->
-    <!-- <readoutModule name="module" origin="(0,0)" size="(pitch*(nChannels-1)+pitch/2+2*extraside,pitch*(nChannels-1)+pitch/2+2*extraside)" tolerance="1.e-4" >-->
-
-    <readoutModule name="module" size="(pitch*(nChannels-1)+pitch/2,pitch*(nChannels-1)+pitch/2)" tolerance="1.e-4" > <!-- size=(59.75,59.75)-->
-        
-        <!-- Y-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="${nCh}" >
-                <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nCh}*pitch+pitch/2.,${nPix}*pitch-pitch/2.)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-	    
-        <!-- X-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="nChannels+${nCh}" >
-            <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nPix}*pitch,${nCh}*pitch)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-
-    </readoutModule>
-
-    <readoutPlane position="(0,0,-15)mm" planeVector="(0,0,1)" chargeCollection="1" cathodePosition="(0,0,15)mm">
-        <addReadoutModule id="0" name="module"
-            origin="(0,-42.25)mm"
-            rotation="45"
-            decodingFile="IAXOD0.dec"/>
-
-    </readoutPlane>
-
-</TRestDetectorReadout>
-
-<!-- Updated definition of IAXOD0 readout for final setup -->
-
-<TRestDetectorReadout name="IAXOD0_Readout_notcen" title="IAXOD0 readout final setup" >
-    <constant name="nChannels" value="120" />
-    <constant name="nModules" value="1" />
-    <constant name="pitch" value="0.5" />
-    <constant name="pixelSize" value="0.5/sqrt(2.)" />
-    <constant name="offset" value="0" />
-    <constant name="extraside" value="0.125" />
-
-    <parameter name="mappingNodes" value="0" />
-
-    <!-- <readoutModule id="${mod}" plane="0" origin="(0.,-pitch*nChannels/sqrt(2.)-pixelSize/2.)" rotation="45" size="(pitch*nChannels+pitch,pitch*nChannels+pitch/2.)" > -->
-    <!-- <readoutModule name="module" origin="(0,0)" size="(pitch*(nChannels-1)+pitch/2+2*extraside,pitch*(nChannels-1)+pitch/2+2*extraside)" tolerance="1.e-4" >-->
-
-    <readoutModule name="module" size="(pitch*(nChannels-1)+pitch/2,pitch*(nChannels-1)+pitch/2)" tolerance="1.e-4" > <!-- size=(59.75,59.75)-->
-        
-        <!-- Y-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="${nCh}" >
-                <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nCh}*pitch+pitch/2.,${nPix}*pitch-pitch/2.)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-	    
-        <!-- X-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="nChannels+${nCh}" >
-            <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nPix}*pitch,${nCh}*pitch)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-
-    </readoutModule>
-
-    <readoutPlane position="(0,0,-15.6)mm" planeVector="(0,0,1)"
-        chargeCollection="1" 
-        cathodePosition="(0,0,22.5)mm" >
-
-        <addReadoutModule id="0" name="module"
-            origin="(0,0)mm"
-            rotation="45"
-            decodingFile="IAXOD0.dec"/>
-
-    </readoutPlane>
-
-</TRestDetectorReadout>
-
-<!-- Updated definition of IAXOD0 readout (with 0123 decoding) -->
-
-<TRestDetectorReadout name="IAXOD0_Readout_0123" title="IAXOD0 readout with 0123 decoding" >
-    <constant name="nChannels" value="120" />
-    <constant name="nModules" value="1" />
-    <constant name="pitch" value="0.5" />
-    <constant name="pixelSize" value="0.5/sqrt(2.)" />
-    <constant name="offset" value="0" />
-    <constant name="extraside" value="0.125" />
-
-    <parameter name="mappingNodes" value="0" />
-
-    <!-- <readoutModule id="${mod}" plane="0" origin="(0.,-pitch*nChannels/sqrt(2.)-pixelSize/2.)" rotation="45" size="(pitch*nChannels+pitch,pitch*nChannels+pitch/2.)" > -->
-    <!-- <readoutModule name="module" origin="(0,0)" size="(pitch*(nChannels-1)+pitch/2+2*extraside,pitch*(nChannels-1)+pitch/2+2*extraside)" tolerance="1.e-4" >-->
-
-    <readoutModule name="module" origin="(0,0)" size="(pitch*(nChannels-1)+pitch/2,pitch*(nChannels-1)+pitch/2)" tolerance="1.e-4" >
-        
-        <!-- Y-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="${nCh}" >
-                <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nCh}*pitch+pitch/2.,${nPix}*pitch-pitch/2.)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-	    
-        <!-- X-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="nChannels+${nCh}" >
-            <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nPix}*pitch,${nCh}*pitch)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-
-    </readoutModule>
-
-    <readoutPlane position="(0,0,-15.6)mm" planeVector="(0,0,1)"
-        chargeCollection="1" 
-        cathodePosition="(0,0,22.5)mm" >
-
-        <addReadoutModule id="0" name="module"
-            origin="(0,0)" 
-            rotation="45"
-            decodingFile="IAXOD0_0123.dec"/>
-
-    </readoutPlane>
-
-</TRestDetectorReadout>
-
-<!-- Updated definition of IAXOD0 readout (with 1032 decoding) -->
-
-<TRestDetectorReadout name="IAXOD0_Readout_1032" title="IAXOD0 readout with 1032 decoding" >
-    <constant name="nChannels" value="120" />
-    <constant name="nModules" value="1" />
-    <constant name="pitch" value="0.5" />
-    <constant name="pixelSize" value="0.5/sqrt(2.)" />
-    <constant name="offset" value="0" />
-    <constant name="extraside" value="0.125" />
-
-    <parameter name="mappingNodes" value="0" />
-
-    <!-- <readoutModule id="${mod}" plane="0" origin="(0.,-pitch*nChannels/sqrt(2.)-pixelSize/2.)" rotation="45" size="(pitch*nChannels+pitch,pitch*nChannels+pitch/2.)" > -->
-    <!-- <readoutModule name="module" origin="(0,0)" size="(pitch*(nChannels-1)+pitch/2+2*extraside,pitch*(nChannels-1)+pitch/2+2*extraside)" tolerance="1.e-4" >-->
-
-    <readoutModule name="module" origin="(0,0)" size="(pitch*(nChannels-1)+pitch/2,pitch*(nChannels-1)+pitch/2)" tolerance="1.e-4" >
-        
-        <!-- Y-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="${nCh}" >
-                <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nCh}*pitch+pitch/2.,${nPix}*pitch-pitch/2.)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-	    
-        <!-- X-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="nChannels+${nCh}" >
-            <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="(${nPix}*pitch,${nCh}*pitch)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-
-    </readoutModule>
-
-    <readoutPlane position="(0,0,-15.6)mm" planeVector="(0,0,1)"
-        chargeCollection="1" 
-        cathodePosition="(0,0,22.5)mm" >
-
-        <addReadoutModule id="0" name="module"
-            origin="(0,0)" 
-            rotation="45"
-            decodingFile="IAXOD0_1032.dec"/>
-
-    </readoutPlane>
-
-</TRestDetectorReadout>
-
-<!-- Old definition of IAXOD0 readout -->
-
-<TRestDetectorReadout name="Readout_IAXOD0_v1" title="IAXOD0 readout old" >
-    <constant name="nChannels" value="120" />
-    <constant name="nModules" value="1" />
-    <constant name="pitch" value="0.5" />
-    <constant name="pixelSize" value="0.5/sqrt(2.)" />
-    <constant name="offset" value="0" />
-
-    <parameter name="mappingNodes" value="0" />
-
-    <!-- <readoutModule id="${mod}" plane="0" origin="(0.,-pitch*nChannels/sqrt(2.)-pixelSize/2.)" rotation="45" size="(pitch*nChannels+pitch,pitch*nChannels+pitch/2.)" > -->
-
-    <readoutModule name="module" size="(pitch*nChannels+pitch/2,pitch*nChannels+pitch/2.)" tolerance="1.e-4" >
-
-        <!-- Y-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="${nCh}" >
-                <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}" origin="((1+${nCh})*pitch,${nPix}*pitch)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-	    
-        <!-- X-strips -->
-        <for variable="nCh" from="0" to="nChannels-1" step="1" >
-            <readoutChannel id="nChannels+${nCh}" >
-            <for variable="nPix" from="0" to="nChannels-1" step="1" >
-                <addPixel id="${nPix}+1" origin="(${nPix}*pitch+pitch/2.,${nCh}*pitch+pitch/2.)" size="(pixelSize,pixelSize)" rotation="45" />
-                </for>
-            </readoutChannel>
-        </for>
-
-    </readoutModule>
-
-    <readoutPlane position="(0,0,-15.6)mm" planeVector="(0,0,1)"
-        chargeCollection="1" 
-        cathodePosition="(0,0,22.5)mm" >
-
-        <for variable="nModX" from="1" to="nModules" step="1" >
-            <for variable="nModY" from="1" to="nModules" step="1" >
-            <addReadoutModule id="${nModX}+nModules*(${nModY}-1)-1" name="module"
-                origin="(0.,-pitch*nChannels/sqrt(2.)-pixelSize/2.)" 
-                rotation="45"/>
-            </for>
-        </for>
-    </readoutPlane>
-
-</TRestDetectorReadout>
-
-        <!--<for variable="nModX" from="1" to="nModules" step="1" />
-            <for variable="nModY" from="1" to="nModules" step="1" />
-            <addReadoutModule id="0" name="module"
-                size="(pitch*(nChannels-1)+pitch/2+2*extraside,pitch*(nChannels-1)+pitch/2+2*extraside)"
-                origin="(-extraside,-extraside)" 
-                rotation="0"  >
-            </for>
-        </for>-->
-
-
-
-
+        <parameter name="mappingNodes" value="0" />
+        <include file="microbulkModule.rml" />
+        <readoutPlane position="(0,0,-15)mm" planeVector="(0,0,1)" chargeCollection="1" cathodePosition="(0,0,15)mm">
+            <addReadoutModule id="0" name="module" origin="(-0.5*nChannels*pitch,-0.5*nChannels*pitch)" rotation="0" decodingFile="IAXOD0.dec" firstDaqChannel="15*72*4" />
+        </readoutPlane>
+    </TRestReadout>
 </readouts>
