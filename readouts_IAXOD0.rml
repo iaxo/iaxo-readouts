@@ -10,7 +10,7 @@
         <variable name="N_CHANNELS" value="120" overwrite="false" />
     </globals>
 
-    <TRestReadout name="iaxo_readout" title="IAXO-D0 readout ${PITCH} mm-Pitch ${N_CHANNELS}+${N_CHANNELS} channels">
+    <TRestDetectorReadout name="iaxo_readout" title="IAXO-D0 readout ${PITCH} mm-Pitch ${N_CHANNELS}+${N_CHANNELS} channels">
 
         <constant name="pitch" value="${PITCH}" overwrite="false" />
         <!-- The number of modules per axis MxM -->
@@ -25,5 +25,5 @@
         <readoutPlane position="(0,0,-15)mm" planeVector="(0,0,1)" chargeCollection="1" cathodePosition="(0,0,15)mm">
             <addReadoutModule id="0" name="module" origin="(-0.5*nChannels*pitch,-0.5*nChannels*pitch)" rotation="0" decodingFile="IAXOD0.dec" firstDaqChannel="15*72*4" />
         </readoutPlane>
-    </TRestReadout>
+    </TRestDetectorReadout>
 </readouts>
