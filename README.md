@@ -8,7 +8,7 @@ In order to generate the `readout.root` file follow this instructions. We use a 
 
 * From the ROOT shell create a new `TRestDetectorReadout` object referencing the RML file and the `name` of the readout to use 
 
-```TRestDetectorReadout *readout = new TRestDetectorReadout("readouts_IAXOD0.rml", "IAXOD0_Readout")```.
+```TRestDetectorReadout *readout = new TRestDetectorReadout("readouts_IAXOD0.rml", "iaxo_readout")```.
 
 * Create a ROOT file to save the readout into
 
