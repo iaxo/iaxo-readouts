@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<readouts>
+    <globals>
+        <!-- The pitch value in mm -->
+        <variable name="PITCH" value="0.50" overwrite="false"/>
+        <!-- The number of modules per axis MxM -->
+        <variable name="N_MODULES" value="1" overwrite="false"/>
+        <!-- The number of pixels per side PxP -->
+        <variable name="N_CHANNELS" value="120" overwrite="false"/>
+        <!-- The electronics card ID number -->
+        <variable name="CARD_ID" value="15" overwrite="false"/>
+    </globals>
+
+    <TRestDetectorReadout name="iaxoD0Readout"
+                          title="IAXO-D0 readout ${PITCH} mm-Pitch ${N_CHANNELS}+${N_CHANNELS} channels">
+
+        <constant name="pitch" value="${PITCH}" overwrite="false"/>
+        <!-- The number of modules per axis MxM -->
+        <constant name="nModules" value="${N_MODULES}" overwrite="false"/>
+
+        <!-- The number of pixels per side PxP -->
+        <constant name="nChannels" value="${N_CHANNELS}" overwrite="false"/>
+        <constant name="pixelSize" value="${PITCH}/sqrt(2.)"/>
+
+        <parameter name="mappingNodes" value="0"/>
+        <include file="microbulkModule.rml"/>
+        <readoutPlane position="(0,0,-15)mm" normal="(0,0,1)" height="30mm" rotation="0" chargeCollection="1">
+            <addReadoutModule id="0" name="module" origin="(-0.5*nChannels*pitch,-0.5*nChannels*pitch)" rotation="0"
+                              decodingFile="decoding/IAXOD0.dec" firstDaqChannel="${CARD_ID}*72*4"/>
+        </readoutPlane>
+    </TRestDetectorReadout>
+
+    <TRestDetectorReadout name="iaxoD1Readout"
+                          title="IAXO-D1 readout ${PITCH} mm-Pitch ${N_CHANNELS}+${N_CHANNELS} channels">
+
+        <constant name="pitch" value="${PITCH}" overwrite="false"/>
+        <!-- The number of modules per axis MxM -->
+        <constant name="nModules" value="${N_MODULES}" overwrite="false"/>
+
+        <!-- The number of pixels per side PxP -->
+        <constant name="nChannels" value="${N_CHANNELS}" overwrite="false"/>
+        <constant name="pixelSize" value="${PITCH}/sqrt(2.)"/>
+
+        <parameter name="mappingNodes" value="0"/>
+        <include file="microbulkModule.rml"/>
+        <readoutPlane position="(0,0,-15)mm" normal="(0,0,1)" height="30mm" rotation="0" chargeCollection="1">
+            <addReadoutModule id="0" name="module" origin="(-0.5*nChannels*pitch,-0.5*nChannels*pitch)" rotation="0"
+                              decodingFile="decoding/IAXOD1.dec" firstDaqChannel="${CARD_ID}*72*4"/>
+        </readoutPlane>
+    </TRestDetectorReadout>
+</readouts>

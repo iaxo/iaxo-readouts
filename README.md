@@ -1,23 +1,21 @@
-# How to generate the readout
+# IAXO Readouts
 
-The readouts are defined in a RML file, in this case in `readouts_IAXOD0.rml`. This file contains definitions for multiple readouts which correspond to the section called `TRestDetectorReadout` with name given by the field `name`.
+This repository contains all the readout related files for IAXO.
 
-In order to generate the `readout.root` file follow this instructions. We use a RML file called `readouts_IAXOD0.rml` which contains the readout named `IAXOD0_Readout`.
+It contains the necessary configuration files to generate the readouts, and it also contains the readout itself.
 
-* Open a ROOT prompt and load REST libraries (type `restRoot`).
+## Readout generation
 
-* From the ROOT shell create a new `TRestDetectorReadout` object referencing the RML file and the `name` of the readout to use 
+A readout is generated using the `TRestDetectorReadout` class initialized from a rml file.
+This file contains the readout description such as number of channels, pitch, decoding file, etc.
+A single rml file may contain multiple readout definitions identified by a name.
 
-```TRestDetectorReadout *readout = new TRestDetectorReadout("readouts_IAXOD0.rml", "iaxo_readout")```.
+The readout generation is done in two steps:
 
-* Create a ROOT file to save the readout into
+- Initialization using the `TRestDetectorReadout` class.
+- Write the readout to a root file as any other root object.
 
-```TFile *f = new TFile("readouts.root", "RECREATE")```.
+The final file, in this case `readouts.root`, contains all the readouts defined in the rml file.
 
-* Save the readout with a name of our choice which will be used to reference this readout inside the file (in this case "iaxo_readout"). One can create multiple readouts and save them all to the same, then we can choose to load the one we need. To add a new readout to an existing readouts.root file, use the option "UPDATE" instead of "RECREATE".
-
-```readout->Write("iaxo_readout")```.
-
-* Safely close the file
-
-```f->Close()```
+In order to perform the readout generation the macro `generateReadouts.C` is provided. Calling the macro without any
+arguments will generate all the readouts into a single `readouts.root` file.
