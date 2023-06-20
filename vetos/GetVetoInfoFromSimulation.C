@@ -2,6 +2,12 @@
 // Created by lobis on 6/13/2023.
 //
 
+#include <TEveGeoShape.h>
+#include <TEveGeoTopNode.h>
+#include <TEveManager.h>
+#include <TEvePointSet.h>
+#include <TGLViewer.h>
+#include <TGeoManager.h>
 #include <TRestGeant4GeometryInfo.h>
 #include <TRestGeant4Metadata.h>
 #include <TRestRun.h>
@@ -67,6 +73,41 @@ vector<TString> GetVolumesFromExpression(const TRestGeant4GeometryInfo& geometry
         }
     }
     return volumes;
+}
+
+void Draw() {
+    TEveManager::Create();
+
+    // Load the TGeoManager from a file or create it programmatically
+    TGeoManager* geoManager = gGeoManager;
+    if (!geoManager) {
+        cerr << "No TGeoManager found" << endl;
+    }
+
+    TEveGeoTopNode* volume = new TEveGeoTopNode(geoManager, geoManager->GetTopNode());
+    volume->SetVisLevel(5);
+
+    constexpr double transparency = 30.0;
+    gEve->AddGlobalElement(volume);
+    for (int i = 0; i < geoManager->GetListOfVolumes()->GetEntries(); i++) {
+        geoManager->GetVolume(i)->SetTransparency(transparency);
+    }
+
+    // set transparency for all elements in the geometry
+
+    // set background color to white
+    gEve->GetDefaultGLViewer()->SetClearColor(kWhite);
+
+    TEvePointSet* pointSet = new TEvePointSet();
+    pointSet->SetNextPoint(0, 0, 0);
+    pointSet->SetMarkerColor(kRed);
+    pointSet->SetMarkerSize(5);
+    pointSet->SetMarkerStyle(23);
+    pointSet->SetTitle("PointSet");
+
+    gEve->AddElement(pointSet);
+
+    gEve->Redraw3D(kTRUE);
 }
 
 void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.root") {
