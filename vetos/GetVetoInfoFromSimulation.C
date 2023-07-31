@@ -8,6 +8,10 @@
 #include <TEvePointSet.h>
 #include <TGLViewer.h>
 #include <TGeoManager.h>
+#include <TRestDetectorReadout.h>
+#include <TRestDetectorReadoutChannel.h>
+#include <TRestDetectorReadoutModule.h>
+#include <TRestDetectorReadoutPlane.h>
 #include <TRestGeant4GeometryInfo.h>
 #include <TRestGeant4Metadata.h>
 #include <TRestRun.h>
@@ -15,6 +19,7 @@
 #include <optional>
 #include <regex>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -26,8 +31,6 @@ struct VetoInfo {
     TVector3 normal;    // normal to the readout surface.
     double height;      // height of the readout plane: distance between readout and the limit of the veto
 };
-
-vector<VetoInfo> vetoInfo;
 
 std::optional<double> extractLength(const std::string& input) {
     // extracts length from veto name such as
@@ -77,7 +80,7 @@ vector<TString> GetVolumesFromExpression(const TRestGeant4GeometryInfo& geometry
     return volumes;
 }
 
-void Draw() {
+void Draw(const vector<VetoInfo>& vetoInfo) {
     TEveManager::Create();
 
     // Load the TGeoManager from a file or create it programmatically
@@ -131,11 +134,43 @@ void Draw() {
     gEve->Redraw3D();
 }
 
+void GenerateReadout(const vector<VetoInfo>& vetoInfo) {
+    TRestDetectorReadout readout;
+
+    int i = 0;
+    for (const auto& veto : vetoInfo) {
+        TRestDetectorReadoutPlane plane;
+        plane.SetPosition(veto.position);
+        plane.SetNormal(veto.normal);
+        plane.SetHeight(veto.height);
+        plane.SetID(i++);
+
+        TRestDetectorReadoutModule module;
+        module.SetName(veto.volume);
+        module.SetModuleID(0);
+
+        TRestDetectorReadoutChannel channel;
+        const int channelId = i + 1000;  // TODO: set correct ID
+        channel.SetChannelID(channelId);
+        channel.SetDaqID(channelId);
+
+        module.AddChannel(channel);
+        plane.AddModule(module);
+        readout.AddReadoutPlane(plane);
+    }
+
+    auto file = TFile::Open("/tmp/vetoReadout.root", "RECREATE");
+    readout.Write("vetoReadout");
+    file->Close();
+}
+
 void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.root") {
     const char* simulationFilename = "simulation.root";
     TRestRun run(simulationFilename);
     const auto metadata = (TRestGeant4Metadata*)run.GetMetadataClass("TRestGeant4Metadata");
     const auto& geometryInfo = metadata->GetGeant4GeometryInfo();
+
+    vector<VetoInfo> vetoInfo;
 
     const string vetoVolumeExpression = "^scintillatorVolume";
     const string vetoLightGuideExpression = "^scintillatorLightGuideVolume";
@@ -165,7 +200,7 @@ void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.roo
         const TVector3 normal = (vetoPosition - geometryInfo.GetPosition(lightGuide)).Unit();
         auto h = extractLength(volume.Data());
         const double height = h ? *h : 0;
-        const auto readoutPosition = geometryInfo.GetPosition(volume) - normal * height / 2.0;
+        const auto readoutPosition = geometryInfo.GetPosition(volume) - normal * (height / 2.0);
 
         vetoInfo.push_back(VetoInfo{volume.Data(), lightGuide.Data(), readoutPosition, normal, height});
     }
@@ -174,7 +209,9 @@ void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.roo
         cout << VetoInfoToString(info) << endl;
     }
 
-    Draw();
+    // Draw(vetoInfo);
+
+    GenerateReadout(vetoInfo);
 
     cout << "Finished" << endl;
 }
