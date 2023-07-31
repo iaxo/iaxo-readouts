@@ -2,8 +2,8 @@
 // Created by lobis on 6/13/2023.
 //
 
+#include <TEveGeoNode.h>
 #include <TEveGeoShape.h>
-#include <TEveGeoTopNode.h>
 #include <TEveManager.h>
 #include <TEvePointSet.h>
 #include <TGLViewer.h>
@@ -26,6 +26,8 @@ struct VetoInfo {
     TVector3 normal;    // normal to the readout surface.
     double height;      // height of the readout plane: distance between readout and the limit of the veto
 };
+
+vector<VetoInfo> vetoInfo;
 
 std::optional<double> extractLength(const std::string& input) {
     // extracts length from veto name such as
@@ -87,7 +89,7 @@ void Draw() {
     TEveGeoTopNode* volume = new TEveGeoTopNode(geoManager, geoManager->GetTopNode());
     volume->SetVisLevel(5);
 
-    constexpr double transparency = 30.0;
+    constexpr double transparency = 10.0;
     gEve->AddGlobalElement(volume);
     for (int i = 0; i < geoManager->GetListOfVolumes()->GetEntries(); i++) {
         geoManager->GetVolume(i)->SetTransparency(transparency);
@@ -98,16 +100,35 @@ void Draw() {
     // set background color to white
     gEve->GetDefaultGLViewer()->SetClearColor(kWhite);
 
-    TEvePointSet* pointSet = new TEvePointSet();
-    pointSet->SetNextPoint(0, 0, 0);
-    pointSet->SetMarkerColor(kRed);
-    pointSet->SetMarkerSize(5);
-    pointSet->SetMarkerStyle(23);
-    pointSet->SetTitle("PointSet");
+    TEvePointSet* readoutPositions = new TEvePointSet("VetoInfo");
 
-    gEve->AddElement(pointSet);
+    for (const auto& veto : vetoInfo) {
+        readoutPositions->SetNextPoint(veto.position.X() / 10.0, veto.position.Y() / 10.0,
+                                       veto.position.Z() / 10.0);
+    }
 
-    gEve->Redraw3D(kTRUE);
+    readoutPositions->SetMarkerColor(kRed);
+    readoutPositions->SetMarkerSize(3);
+    readoutPositions->SetMarkerStyle(23);
+
+    gEve->AddElement(readoutPositions);
+
+    // limit of veto
+
+    TEvePointSet* vetoLimits = new TEvePointSet("VetoLimits");
+
+    for (const auto& veto : vetoInfo) {
+        TVector3 limit = veto.position + veto.normal * veto.height;
+        vetoLimits->SetNextPoint(limit.X() / 10.0, limit.Y() / 10.0, limit.Z() / 10.0);
+    }
+
+    vetoLimits->SetMarkerColor(kBlue);
+    vetoLimits->SetMarkerSize(3);
+    vetoLimits->SetMarkerStyle(23);
+
+    gEve->AddElement(vetoLimits);
+
+    gEve->Redraw3D();
 }
 
 void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.root") {
@@ -118,9 +139,6 @@ void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.roo
 
     const string vetoVolumeExpression = "^scintillatorVolume";
     const string vetoLightGuideExpression = "^scintillatorLightGuideVolume";
-    const double vetoLightGuideOffset =
-        65.0;  // mm. This is the center of the light guide to the center of one of the scintillator sides.
-
     auto vetoVolumes = GetVolumesFromExpression(geometryInfo, vetoVolumeExpression);
     if (vetoVolumes.empty()) {
         cerr << "No veto volumes found" << endl;
@@ -140,15 +158,14 @@ void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.roo
 
     cout << "Found " << vetoVolumes.size() << " veto volumes" << endl;
 
-    vector<VetoInfo> vetoInfo;
     for (size_t i = 0; i < vetoVolumes.size(); ++i) {
         const auto& volume = vetoVolumes[i];
         const auto& lightGuide = vetoLightGuides[i];
         const auto& vetoPosition = geometryInfo.GetPosition(volume);
-        const TVector3 normal = (geometryInfo.GetPosition(lightGuide) - vetoPosition).Unit();
-        const auto readoutPosition = geometryInfo.GetPosition(volume) - normal * vetoLightGuideOffset;
+        const TVector3 normal = (vetoPosition - geometryInfo.GetPosition(lightGuide)).Unit();
         auto h = extractLength(volume.Data());
         const double height = h ? *h : 0;
+        const auto readoutPosition = geometryInfo.GetPosition(volume) - normal * height / 2.0;
 
         vetoInfo.push_back(VetoInfo{volume.Data(), lightGuide.Data(), readoutPosition, normal, height});
     }
@@ -156,6 +173,8 @@ void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.roo
     for (const auto& info : vetoInfo) {
         cout << VetoInfoToString(info) << endl;
     }
+
+    Draw();
 
     cout << "Finished" << endl;
 }
