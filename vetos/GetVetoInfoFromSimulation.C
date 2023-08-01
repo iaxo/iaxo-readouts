@@ -11,6 +11,7 @@
 #include <TRestDetectorReadout.h>
 #include <TRestDetectorReadoutChannel.h>
 #include <TRestDetectorReadoutModule.h>
+#include <TRestDetectorReadoutPixel.h>
 #include <TRestDetectorReadoutPlane.h>
 #include <TRestGeant4GeometryInfo.h>
 #include <TRestGeant4Metadata.h>
@@ -24,12 +25,12 @@
 using namespace std;
 
 struct VetoInfo {
-    string volume;      // physical volume name
-    string lightGuide;  // physical lightGuide volume name
-    TVector3 position;  // position of the readout in the world frame. Not the position of the readout volume.
-                        // This should be the center of one of the sides of the readout volume.
-    TVector3 normal;    // normal to the readout surface.
-    double height;      // height of the readout plane: distance between readout and the limit of the veto
+    string volume;             // physical volume name
+    string lightGuide;         // physical lightGuide volume name
+    TVector3 readoutPosition;  // position of the readout in the world frame. Not the position of the readout
+                               // volume. This should be the center of one of the sides of the readout volume.
+    TVector3 normal;  // normal to the readout surface.
+    double height;    // height of the readout plane: distance between readout and the limit of the veto
 };
 
 std::optional<double> extractLength(const std::string& input) {
@@ -56,8 +57,9 @@ std::optional<double> extractLength(const std::string& input) {
 
 string VetoInfoToString(const VetoInfo& vetoInfo) {
     ostringstream oss;
-    oss << "VetoInfo{volume=" << vetoInfo.volume << ", lightGuide=" << vetoInfo.lightGuide << ", position=("
-        << vetoInfo.position.X() << ", " << vetoInfo.position.Y() << ", " << vetoInfo.position.Z() << ")"
+    oss << "VetoInfo{volume=" << vetoInfo.volume << ", lightGuide=" << vetoInfo.lightGuide
+        << ", readoutPosition=(" << vetoInfo.readoutPosition.X() << ", " << vetoInfo.readoutPosition.Y()
+        << ", " << vetoInfo.readoutPosition.Z() << ")"
         << ", normal=(" << vetoInfo.normal.X() << ", " << vetoInfo.normal.Y() << ", " << vetoInfo.normal.Z()
         << ")"
         << ", height=" << vetoInfo.height << "}";
@@ -106,8 +108,8 @@ void Draw(const vector<VetoInfo>& vetoInfo) {
     TEvePointSet* readoutPositions = new TEvePointSet("VetoInfo");
 
     for (const auto& veto : vetoInfo) {
-        readoutPositions->SetNextPoint(veto.position.X() / 10.0, veto.position.Y() / 10.0,
-                                       veto.position.Z() / 10.0);
+        readoutPositions->SetNextPoint(veto.readoutPosition.X() / 10.0, veto.readoutPosition.Y() / 10.0,
+                                       veto.readoutPosition.Z() / 10.0);
     }
 
     readoutPositions->SetMarkerColor(kRed);
@@ -121,7 +123,7 @@ void Draw(const vector<VetoInfo>& vetoInfo) {
     TEvePointSet* vetoLimits = new TEvePointSet("VetoLimits");
 
     for (const auto& veto : vetoInfo) {
-        TVector3 limit = veto.position + veto.normal * veto.height;
+        TVector3 limit = veto.readoutPosition + veto.normal * veto.height;
         vetoLimits->SetNextPoint(limit.X() / 10.0, limit.Y() / 10.0, limit.Z() / 10.0);
     }
 
@@ -134,38 +136,69 @@ void Draw(const vector<VetoInfo>& vetoInfo) {
     gEve->Redraw3D();
 }
 
-void GenerateReadout(const vector<VetoInfo>& vetoInfo) {
+TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
     TRestDetectorReadout readout;
 
     int i = 0;
     for (const auto& veto : vetoInfo) {
         TRestDetectorReadoutPlane plane;
-        plane.SetPosition(veto.position);
+        plane.SetPosition(veto.readoutPosition);
         plane.SetNormal(veto.normal);
         plane.SetHeight(veto.height);
         plane.SetID(i++);
 
+        TVector2 size = {200, 50};
         TRestDetectorReadoutModule module;
         module.SetName(veto.volume);
         module.SetModuleID(0);
+        module.SetSize(size);
 
         TRestDetectorReadoutChannel channel;
         const int channelId = i + 1000;  // TODO: set correct ID
         channel.SetChannelID(channelId);
         channel.SetDaqID(channelId);
 
+        TRestDetectorReadoutPixel pixel;
+        pixel.SetSize(size);
+        channel.AddPixel(pixel);
+
         module.AddChannel(channel);
         plane.AddModule(module);
         readout.AddReadoutPlane(plane);
     }
 
-    auto file = TFile::Open("/tmp/vetoReadout.root", "RECREATE");
+    const string readoutFilename = "/tmp/vetoReadout.root";
+    auto file = TFile::Open(readoutFilename.c_str(), "RECREATE");
     readout.Write("vetoReadout");
     file->Close();
+
+    file = TFile::Open(readoutFilename.c_str());
+    TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("vetoReadout"));
+
+    return readoutFromFile;
 }
 
-void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.root") {
-    const char* simulationFilename = "simulation.root";
+void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo) {
+    for (const auto veto : vetoInfo) {
+        Int_t moduleId = -1;
+        Int_t channelId = -1;
+
+        TVector3 position = veto.readoutPosition + veto.normal * (veto.height / 2.0);  // center of veto
+
+        for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
+            Int_t daqId = readout->GetHitsDaqChannelAtReadoutPlane(position, moduleId, channelId, p);
+
+            if (daqId != -1) {
+                break;
+            }
+        }
+
+        cout << "Position: " << position.X() << ", " << position.Y() << ", " << position.Z()
+             << " Module ID: " << moduleId << " Channel ID: " << channelId << endl;
+    }
+}
+
+void GetVetoInfoFromSimulation(const char* simulationFilename = "simulation.root") {
     TRestRun run(simulationFilename);
     const auto metadata = (TRestGeant4Metadata*)run.GetMetadataClass("TRestGeant4Metadata");
     const auto& geometryInfo = metadata->GetGeant4GeometryInfo();
@@ -211,7 +244,9 @@ void GetVetoInfoFromSimulation(const char* simulationFilename1 = "simulation.roo
 
     // Draw(vetoInfo);
 
-    GenerateReadout(vetoInfo);
+    const auto readout = GenerateReadout(vetoInfo);
+
+    TestReadout(readout, vetoInfo);
 
     cout << "Finished" << endl;
 }
