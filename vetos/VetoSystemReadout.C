@@ -264,6 +264,9 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         const int channelId = i + 1000;  // TODO: set correct ID
         channel.SetChannelID(channelId);
         channel.SetDaqID(channelId);
+        channel.SetChannelName(veto.volume);
+        channel.SetChannelType("veto");
+
         referenceVetoNameToDaqId[veto.volume] = channelId;
 
         TRestDetectorReadoutPixel pixel;
