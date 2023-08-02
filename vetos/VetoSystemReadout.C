@@ -8,6 +8,7 @@
 #include <TEvePointSet.h>
 #include <TGLViewer.h>
 #include <TGeoManager.h>
+#include <TRandom.h>
 #include <TRestDetectorReadout.h>
 #include <TRestDetectorReadoutChannel.h>
 #include <TRestDetectorReadoutModule.h>
@@ -151,7 +152,7 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
 
     for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
         auto plane = readout->GetReadoutPlane(p);
-        auto position = plane->GetPosition() + plane->GetAxisX() * 50;
+        auto position = plane->GetPosition() + plane->GetAxisX() * 100;
         auto normal = plane->GetNormal();
         auto height = plane->GetHeight();
 
@@ -175,7 +176,63 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
     gEve->AddElement(readoutPlanePositions);
     gEve->AddElement(readoutPlaneEnd);
 
-    gEve->Redraw3D();
+    TEvePointSet* point = new TEvePointSet("points");
+    int targetDaqId = 1020;
+
+    map<int, TEvePointSet*> vetoNameToPoints;
+    for (const auto& [name, daqId] : referenceVetoNameToDaqId) {
+        vetoNameToPoints[daqId] = new TEvePointSet(name.c_str());
+    }
+
+    auto pointSetTest = new TEvePointSet("test");
+
+    // generate random points to see if they are inside the veto
+    for (int i = 0; i < 1000000; i++) {
+        double x = gRandom->Uniform(-2000, 2000);
+        double y = gRandom->Uniform(-2000, 2000);
+        double z = gRandom->Uniform(-2000, 2000);
+
+        int daqId = -1;
+        int moduleId = -1;
+        int channelId = -1;
+        for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
+            daqId = readout->GetHitsDaqChannelAtReadoutPlane({x, y, z}, moduleId, channelId, p);
+            if (daqId != -1) {
+                break;
+            }
+        }
+
+        if (daqId == -1) {
+            continue;
+        }
+
+        if (daqId != targetDaqId) {
+            // continue;
+        }
+
+        auto pointSet = vetoNameToPoints[daqId];
+        point->SetNextPoint(x / 10.0, y / 10.0, z / 10.0);
+
+        pointSet->SetNextPoint(x / 10.0, y / 10.0, z / 10.0);
+    }
+
+    vector<int> colors = {1, 920, 632, 416, 600, 400, 616, 432, 800, 820, 840, 860, 880, 900};
+
+    int counter = 0;
+    for (const auto& [daqId, pointSet] : vetoNameToPoints) {
+        counter++;
+        pointSet->SetMarkerColor(colors[counter % colors.size()]);
+        pointSet->SetMarkerSize(1);
+        // pointSet->SetMarkerStyle(23);
+        gEve->AddElement(pointSet);
+    }
+
+    pointSetTest->SetMarkerColor(120);
+    pointSetTest->SetMarkerSize(3);
+    pointSetTest->SetMarkerStyle(23);
+    gEve->AddElement(pointSetTest);
+
+    gEve->Redraw3D(kTRUE);
 }
 
 bool IsTopOrBottom(const string& name) {
@@ -224,7 +281,8 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
     file->Close();
 
     file = TFile::Open(readoutFilename.c_str());
-    TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("vetoSystemReadout"));
+    TRestDetectorReadout* readoutFromFile =
+        dynamic_cast<TRestDetectorReadout*>(file->Get("vetoSystemReadout"));
 
     return readoutFromFile;
 }
@@ -316,7 +374,7 @@ void VetoSystemReadout(const char* simulationFilename = "simulation.root") {
     TestReadout(readout, vetoInfo);
     cout << "Done testing readout" << endl;
 
-    // Draw(vetoInfo, readout);
+    Draw(vetoInfo, readout);
 
     cout << "Finished" << endl;
 }
