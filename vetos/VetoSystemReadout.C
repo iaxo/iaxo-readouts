@@ -218,13 +218,13 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         readout.AddReadoutPlane(plane);
     }
 
-    const string readoutFilename = "/tmp/vetoReadout.root";
+    const string readoutFilename = "vetoSystemReadout.root";
     auto file = TFile::Open(readoutFilename.c_str(), "RECREATE");
-    readout.Write("vetoReadout");
+    readout.Write("vetoSystemReadout");
     file->Close();
 
     file = TFile::Open(readoutFilename.c_str());
-    TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("vetoReadout"));
+    TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("vetoSystemReadout"));
 
     return readoutFromFile;
 }
@@ -253,15 +253,21 @@ void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo
     }
 
     // print mismatching channels
+    bool mismatch = false;
     for (const auto& [volume, daqId] : volumeToChannelId) {
         if (daqId != referenceVetoNameToDaqId[volume]) {
             cout << "Mismatching channel for volume " << volume << " DAQ ID: " << daqId
                  << " Ref DAQ ID: " << referenceVetoNameToDaqId[volume] << endl;
+            mismatch = true;
         }
+    }
+    if (mismatch) {
+        cerr << "Mismatching channels found" << endl;
+        exit(1);
     }
 }
 
-void GetVetoInfoFromSimulation(const char* simulationFilename = "simulation.root") {
+void VetoSystemReadout(const char* simulationFilename = "simulation.root") {
     TRestRun run(simulationFilename);
     const auto metadata = (TRestGeant4Metadata*)run.GetMetadataClass("TRestGeant4Metadata");
     const auto& geometryInfo = metadata->GetGeant4GeometryInfo();
@@ -310,7 +316,7 @@ void GetVetoInfoFromSimulation(const char* simulationFilename = "simulation.root
     TestReadout(readout, vetoInfo);
     cout << "Done testing readout" << endl;
 
-    Draw(vetoInfo, readout);
+    // Draw(vetoInfo, readout);
 
     cout << "Finished" << endl;
 }
