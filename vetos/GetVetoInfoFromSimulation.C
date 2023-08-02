@@ -17,8 +17,10 @@
 #include <TRestGeant4Metadata.h>
 #include <TRestRun.h>
 
+#include <map>
 #include <optional>
 #include <regex>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -29,9 +31,11 @@ struct VetoInfo {
     string lightGuide;         // physical lightGuide volume name
     TVector3 readoutPosition;  // position of the readout in the world frame. Not the position of the readout
                                // volume. This should be the center of one of the sides of the readout volume.
-    TVector3 normal;  // normal to the readout surface.
-    double height;    // height of the readout plane: distance between readout and the limit of the veto
+    TVector3 normal;           // normal to the readout surface.
+    double height;  // height of the readout plane: distance between readout and the limit of the veto
 };
+
+std::map<string, int> referenceVetoNameToDaqId;
 
 std::optional<double> extractLength(const std::string& input) {
     // extracts length from veto name such as
@@ -82,7 +86,9 @@ vector<TString> GetVolumesFromExpression(const TRestGeant4GeometryInfo& geometry
     return volumes;
 }
 
-void Draw(const vector<VetoInfo>& vetoInfo) {
+void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
+    cout << "Drawing " << vetoInfo.size() << " veto readouts" << endl;
+
     TEveManager::Create();
 
     // Load the TGeoManager from a file or create it programmatically
@@ -113,7 +119,7 @@ void Draw(const vector<VetoInfo>& vetoInfo) {
     }
 
     readoutPositions->SetMarkerColor(kRed);
-    readoutPositions->SetMarkerSize(3);
+    readoutPositions->SetMarkerSize(1);
     readoutPositions->SetMarkerStyle(23);
 
     gEve->AddElement(readoutPositions);
@@ -128,12 +134,53 @@ void Draw(const vector<VetoInfo>& vetoInfo) {
     }
 
     vetoLimits->SetMarkerColor(kBlue);
-    vetoLimits->SetMarkerSize(3);
+    vetoLimits->SetMarkerSize(1);
     vetoLimits->SetMarkerStyle(23);
 
     gEve->AddElement(vetoLimits);
 
+    // from readout
+
+    TEvePointSet* readoutPlanePositions = new TEvePointSet("ReadoutPlanePositions");
+    TEvePointSet* readoutPlaneEnd = new TEvePointSet("ReadoutPlaneEnd");
+
+    for (const auto& veto : vetoInfo) {
+        TVector3 limit = veto.readoutPosition + veto.normal * veto.height;
+        vetoLimits->SetNextPoint(limit.X() / 10.0, limit.Y() / 10.0, limit.Z() / 10.0);
+    }
+
+    for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
+        auto plane = readout->GetReadoutPlane(p);
+        auto position = plane->GetPosition() + plane->GetAxisX() * 50;
+        auto normal = plane->GetNormal();
+        auto height = plane->GetHeight();
+
+        readoutPlanePositions->SetNextPoint(position.X() / 10.0, position.Y() / 10.0, position.Z() / 10.0);
+
+        TVector3 limit = position + normal * height;
+        readoutPlaneEnd->SetNextPoint(limit.X() / 10.0, limit.Y() / 10.0, limit.Z() / 10.0);
+
+        auto module = plane->GetModule(0);
+        module->GetOrigin();
+    }
+
+    readoutPlanePositions->SetMarkerColor(kGreen);
+    readoutPlanePositions->SetMarkerSize(3);
+    readoutPlanePositions->SetMarkerStyle(23);
+
+    readoutPlaneEnd->SetMarkerColor(kYellow);
+    readoutPlaneEnd->SetMarkerSize(3);
+    readoutPlaneEnd->SetMarkerStyle(23);
+
+    gEve->AddElement(readoutPlanePositions);
+    gEve->AddElement(readoutPlaneEnd);
+
     gEve->Redraw3D();
+}
+
+bool IsTopOrBottom(const string& name) {
+    // if name contains "Top" or "Bottom" return true
+    return name.find("vetoSystemTop") != string::npos || name.find("vetoSystemBottom") != string::npos;
 }
 
 TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
@@ -146,17 +193,21 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         plane.SetNormal(veto.normal);
         plane.SetHeight(veto.height);
         plane.SetID(i++);
+        plane.SetAxisX(IsTopOrBottom(veto.volume) ? TVector3(1, 0, 0) : TVector3(0, 1, 0));
 
-        TVector2 size = {200, 50};
         TRestDetectorReadoutModule module;
         module.SetName(veto.volume);
         module.SetModuleID(0);
+
+        TVector2 size = TVector2(200, 50);
         module.SetSize(size);
+        module.SetOrigin(-1.0 * size / 2.0);
 
         TRestDetectorReadoutChannel channel;
         const int channelId = i + 1000;  // TODO: set correct ID
         channel.SetChannelID(channelId);
         channel.SetDaqID(channelId);
+        referenceVetoNameToDaqId[veto.volume] = channelId;
 
         TRestDetectorReadoutPixel pixel;
         pixel.SetSize(size);
@@ -179,22 +230,34 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
 }
 
 void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo) {
+    std::map<string, int> volumeToChannelId;
     for (const auto veto : vetoInfo) {
         Int_t moduleId = -1;
         Int_t channelId = -1;
+        Int_t daqId = -1;
 
         TVector3 position = veto.readoutPosition + veto.normal * (veto.height / 2.0);  // center of veto
 
         for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
-            Int_t daqId = readout->GetHitsDaqChannelAtReadoutPlane(position, moduleId, channelId, p);
-
+            daqId = readout->GetHitsDaqChannelAtReadoutPlane(position, moduleId, channelId, p);
             if (daqId != -1) {
                 break;
             }
         }
 
-        cout << "Position: " << position.X() << ", " << position.Y() << ", " << position.Z()
-             << " Module ID: " << moduleId << " Channel ID: " << channelId << endl;
+        volumeToChannelId[veto.volume] = daqId;
+
+        cout << "Name: " << veto.volume << "Position: " << position.X() << ", " << position.Y() << ", "
+             << position.Z() << " Module ID: " << moduleId << " Channel ID: " << channelId
+             << " DAQ ID: " << daqId << " Ref DAQ ID: " << referenceVetoNameToDaqId[veto.volume] << endl;
+    }
+
+    // print mismatching channels
+    for (const auto& [volume, daqId] : volumeToChannelId) {
+        if (daqId != referenceVetoNameToDaqId[volume]) {
+            cout << "Mismatching channel for volume " << volume << " DAQ ID: " << daqId
+                 << " Ref DAQ ID: " << referenceVetoNameToDaqId[volume] << endl;
+        }
     }
 }
 
@@ -242,11 +305,12 @@ void GetVetoInfoFromSimulation(const char* simulationFilename = "simulation.root
         cout << VetoInfoToString(info) << endl;
     }
 
-    // Draw(vetoInfo);
-
     const auto readout = GenerateReadout(vetoInfo);
 
     TestReadout(readout, vetoInfo);
+    cout << "Done testing readout" << endl;
+
+    Draw(vetoInfo, readout);
 
     cout << "Finished" << endl;
 }
