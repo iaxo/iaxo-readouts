@@ -225,7 +225,7 @@
 
         <addProcess type="TRestGeant4ToDetectorHitsProcess" name="G4ToHits" value="ON">
             <addVolume name="Chamber_gas"/>
-            <addVolume name="^scintillatorVolume"/> <!-- Not adding all for some reason -->
+            <addVolume name="^scintillatorVolume"/>
         </addProcess>
 
         <addProcess type="TRestDetectorHitsToSignalProcess" name="HitsToSignal" value="ON">
