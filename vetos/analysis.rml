@@ -22,7 +22,7 @@
         <parameter name="readOnly" value="false"/>
 
         <addMetadata type="TRestDetectorReadout" name="vetoSystemReadout" file="./vetoSystemReadout.root"/>
-        <TRestDetectorGas name="Argon-Isobutane 2Pct 10-10E3Vcm" pressure="1.4" file="server"/>
+        <!-- <TRestDetectorGas name="Argon-Isobutane 2Pct 10-10E3Vcm" pressure="1.4" file="server"/> -->
 
     </TRestRun>
 
@@ -230,6 +230,7 @@
 
         <addProcess type="TRestDetectorHitsToSignalProcess" name="HitsToSignal" value="ON">
             <parameter name="sampling" value="100ns"/>
+            <parameter name="vetoLightAttenuationLength" value="400cm"/>
         </addProcess>
 
     </TRestProcessRunner>
