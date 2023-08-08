@@ -223,14 +223,28 @@
 
         </addProcess>
 
-        <addProcess type="TRestGeant4ToDetectorHitsProcess" name="G4ToHits" value="ON">
-            <addVolume name="Chamber_gas"/>
-            <addVolume name="^scintillatorVolume"/>
+        <addProcess type="TRestGeant4ToDetectorHitsProcess" name="Geant4ToDetectorHits" value="ON">
+            <volume name="Chamber_gas"/>
+            <volume name="^scintillatorVolume"/>
         </addProcess>
 
-        <addProcess type="TRestDetectorHitsToSignalProcess" name="HitsToSignal" value="ON">
+        <addProcess type="TRestDetectorHitsToSignalProcess" name="DetectorHitsToSignal" value="ON">
             <parameter name="sampling" value="100ns"/>
             <parameter name="vetoLightAttenuationLength" value="400cm"/>
+        </addProcess>
+
+        <addProcess type="TRestDetectorSignalToRawSignalProcess" name="DetectorSignalToRaw" value="ON">
+            <parameter name="sampling" value="100ns"/>
+            <parameter name="nPoints" value="512"/>
+
+            <parameter name="triggerMode" value="fixed"/>
+            <parameter name="triggerFixedStartTime" value="0.0us"/>
+            <parameter name="triggerDelay" value="96"/>
+
+            <parameter name="calibrationEnergy" value="(0,10)MeV"/>
+            <parameter name="calibrationRange" value="(0.05,0.5)"/>
+
+            <parameter name="shapingTime" value="869.2ns"/>
         </addProcess>
 
     </TRestProcessRunner>
