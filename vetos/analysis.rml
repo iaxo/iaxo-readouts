@@ -31,6 +31,18 @@
         <parameter name="eventsToProcess" value="0"/>
         <parameter name="pureAnalysisOutput" value="ON"/>
 
+        <addProcess type="TRestGeant4QuenchingProcess" name="g4Quenching" value="ON">
+
+            <volume name="^scintillatorVolume">
+                <particle name="neutron" quenchingFactor="0.1"/>
+                <particle name="proton" quenchingFactor="0.1"/>
+                <particle name="e-" quenchingFactor="1.0"/>
+                <particle name="e+" quenchingFactor="1.0"/>
+                <particle name="gamma" quenchingFactor="1.0"/>
+            </volume>
+
+        </addProcess>
+
         <addProcess type="TRestGeant4AnalysisProcess" name="g4Ana" value="ON">
             <observable name="Chamber_gasVolumeEDep" value="ON"/>
             <observable name="eventPrimaryParticleName" value="ON"/>
@@ -41,7 +53,6 @@
             <observable name="zOriginPrimary" value="ON"/>
 
             <observable name="energyPrimary" value="ON"/>
-
 
             <observable
                     name="VetoSystem_vetoSystemTop_vetoLayerTop2_assembly-5.veto1_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
@@ -229,7 +240,7 @@
         </addProcess>
 
         <addProcess type="TRestDetectorHitsToSignalProcess" name="DetectorHitsToSignal" value="ON">
-            <parameter name="sampling" value="100ns"/>
+            <parameter name="sampling" value="1ns"/>
             <parameter name="vetoLightAttenuationLength" value="400cm"/>
         </addProcess>
 
@@ -245,6 +256,10 @@
             <parameter name="calibrationRange" value="(0.05,0.5)"/>
 
             <parameter name="shapingTime" value="869.2ns"/>
+        </addProcess>
+
+        <addProcess type="TRestRawSignalAddNoiseProcess" name="RawNoise" value="OFF">
+            <parameter name="noiseLevel" value="100"/>
         </addProcess>
 
     </TRestProcessRunner>
