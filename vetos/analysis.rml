@@ -36,17 +36,16 @@
             <volume name="^scintillatorVolume">
                 <particle name="neutron" quenchingFactor="0.1"/>
                 <particle name="proton" quenchingFactor="0.1"/>
-                <particle name="e-" quenchingFactor="1.0"/>
-                <particle name="e+" quenchingFactor="1.0"/>
-                <particle name="gamma" quenchingFactor="1.0"/>
             </volume>
 
         </addProcess>
 
         <addProcess type="TRestGeant4AnalysisProcess" name="g4Ana" value="ON">
-            <observable name="Chamber_gasVolumeEDep" value="ON"/>
-            <observable name="eventPrimaryParticleName" value="ON"/>
-            <observable name="subEventPrimaryParticleName" value="ON"/>
+            <observable name="sensitiveVolumeEnergy" value="ON"/>
+            <observable name="sensitiveVolumeFirstHitTime" value="ON"/>
+
+            <observable name="eventPrimaryParticleName" value="OFF"/>
+            <observable name="subEventPrimaryParticleName" value="OFF"/>
 
             <observable name="xOriginPrimary" value="ON"/>
             <observable name="yOriginPrimary" value="ON"/>
@@ -54,184 +53,10 @@
 
             <observable name="energyPrimary" value="ON"/>
 
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop2_assembly-5.veto1_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop2_assembly-5.veto2_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop2_assembly-5.veto3_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop2_assembly-5.veto4_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop3_assembly-5.veto1_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop3_assembly-5.veto2_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop3_assembly-5.veto3_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop3_assembly-5.veto4_scintillatorVolume-1500.0mm-7326620dVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom1_assembly-10.veto1_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom1_assembly-10.veto2_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom1_assembly-10.veto3_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom1_assembly-10.veto4_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom2_assembly-10.veto1_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom2_assembly-10.veto2_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom2_assembly-10.veto3_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom2_assembly-10.veto4_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom3_assembly-10.veto1_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom3_assembly-10.veto2_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom3_assembly-10.veto3_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBottom_vetoLayerBottom3_assembly-10.veto4_scintillatorVolume-1500.0mm-73266212VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast1_assembly-13.veto1_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast1_assembly-13.veto2_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast1_assembly-13.veto3_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast2_assembly-13.veto1_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast2_assembly-13.veto2_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast2_assembly-13.veto3_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast3_assembly-13.veto1_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast3_assembly-13.veto2_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemEast_vetoLayerEast3_assembly-13.veto3_scintillatorVolume-1500.0mm-f1a5df68VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest1_assembly-16.veto1_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest1_assembly-16.veto2_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest1_assembly-16.veto3_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest2_assembly-16.veto1_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest2_assembly-16.veto2_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest2_assembly-16.veto3_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest3_assembly-16.veto1_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest3_assembly-16.veto2_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemWest_vetoLayerWest3_assembly-16.veto3_scintillatorVolume-1500.0mm-f1a5df6bVolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop1_assembly-8.veto1_scintillatorVolume-800.0mm-73266210VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop1_assembly-8.veto2_scintillatorVolume-800.0mm-73266210VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemTop_vetoLayerTop1_assembly-8.veto3_scintillatorVolume-800.0mm-73266210VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack1_assembly-22.veto1_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack1_assembly-22.veto2_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack1_assembly-22.veto3_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack2_assembly-22.veto1_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack2_assembly-22.veto2_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack2_assembly-22.veto3_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack3_assembly-22.veto1_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack3_assembly-22.veto2_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemBack_vetoLayerBack3_assembly-22.veto3_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack1_assembly-22.veto1_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack1_assembly-22.veto2_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack1_assembly-22.veto3_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack2_assembly-22.veto1_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack2_assembly-22.veto2_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack2_assembly-22.veto3_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack3_assembly-22.veto1_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack3_assembly-22.veto2_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
-            <observable
-                    name="VetoSystem_vetoSystemFront_vetoLayerBack3_assembly-22.veto3_scintillatorVolume-800.0mm-f1a5df86VolumeEDep"
-                    volume="ON"/>
+        </addProcess>
 
+        <addProcess type="TRestGeant4VetoAnalysisProcess" name="g4Veto" value="ON" observable="all">
+            <parameter name="vetoVolumesExpression" value="^scintillatorVolume"/>
         </addProcess>
 
         <addProcess type="TRestGeant4ToDetectorHitsProcess" name="Geant4ToDetectorHits" value="ON">
