@@ -128,17 +128,17 @@
         </addProcess>
 
         <addProcess type="TRestDetectorSignalToRawSignalProcess" name="DetectorSignalToRaw" value="ON">
-            <parameter name="sampling" value="100ns"/>
+            <parameter name="sampling" value="200ns"/>
             <parameter name="nPoints" value="512"/>
 
-            <parameter name="triggerMode" value="fixed"/>
-            <parameter name="triggerFixedStartTime" value="0.0us"/>
+            <parameter name="triggerMode" value="observable"/>
+            <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/>
             <parameter name="triggerDelay" value="96"/>
 
             <parameter name="calibrationEnergy" value="(0,10)MeV"/>
             <parameter name="calibrationRange" value="(0.05,0.5)"/>
 
-            <parameter name="shapingTime" value="869.2ns"/>
+            <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
         </addProcess>
 
         <addProcess type="TRestRawSignalAddNoiseProcess" name="RawNoise" value="OFF">
