@@ -16,6 +16,7 @@
 #include <TRestDetectorReadoutPlane.h>
 #include <TRestGeant4GeometryInfo.h>
 #include <TRestGeant4Metadata.h>
+#include <TRestGeant4VetoAnalysisProcess.h>  // Method to extract veto info from string
 #include <TRestRun.h>
 
 #include <map>
@@ -37,6 +38,24 @@ struct VetoInfo {
 };
 
 std::map<string, int> referenceVetoNameToDaqId;
+
+std::map<string, int> aliasToSignalId = {
+    {"Top_L2_N1", 1},     {"Top_L2_N2", 2},     {"Top_L2_N3", 3},     {"Top_L2_N4", 4},
+    {"Top_L3_N1", 5},     {"Top_L3_N2", 6},     {"Top_L3_N3", 7},     {"Top_L3_N4", 8},
+    {"Bottom_L1_N1", 9},  {"Bottom_L1_N2", 10}, {"Bottom_L1_N3", 11}, {"Bottom_L1_N4", 12},
+    {"Bottom_L2_N1", 13}, {"Bottom_L2_N2", 14}, {"Bottom_L2_N3", 15}, {"Bottom_L2_N4", 16},
+    {"Bottom_L3_N1", 17}, {"Bottom_L3_N2", 18}, {"Bottom_L3_N3", 19}, {"Bottom_L3_N4", 20},
+    {"Right_L1_N1", 21},  {"Right_L1_N2", 22},  {"Right_L1_N3", 23},  {"Right_L2_N1", 24},
+    {"Right_L2_N2", 25},  {"Right_L2_N3", 26},  {"Right_L3_N1", 27},  {"Right_L3_N2", 28},
+    {"Right_L3_N3", 29},  {"Left_L1_N1", 30},   {"Left_L1_N2", 31},   {"Left_L1_N3", 32},
+    {"Left_L2_N1", 33},   {"Left_L2_N2", 34},   {"Left_L2_N3", 35},   {"Left_L3_N1", 36},
+    {"Left_L3_N2", 37},   {"Left_L3_N3", 38},   {"Top_L1_N1", 39},    {"Top_L1_N2", 40},
+    {"Top_L1_N3", 41},    {"Back_L1_N1", 42},   {"Back_L1_N2", 43},   {"Back_L1_N3", 44},
+    {"Back_L2_N1", 45},   {"Back_L2_N2", 46},   {"Back_L2_N3", 47},   {"Back_L3_N1", 48},
+    {"Back_L3_N2", 49},   {"Back_L3_N3", 50},   {"Front_L1_N1", 51},  {"Front_L1_N2", 52},
+    {"Front_L1_N3", 53},  {"Front_L2_N1", 54},  {"Front_L2_N2", 55},  {"Front_L2_N3", 56},
+    {"Front_L3_N1", 57},  {"Front_L3_N2", 58},  {"Front_L3_N3", 59},
+};
 
 std::optional<double> extractLength(const std::string& input) {
     // extracts length from veto name such as
@@ -243,8 +262,23 @@ bool IsTopOrBottom(const string& name) {
 TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
     TRestDetectorReadout readout;
 
+    // verify aliasToSignalId has unique ids
+    set<int> signalIds;
+    for (const auto& [alias, signalId] : aliasToSignalId) {
+        if (signalIds.find(signalId) != signalIds.end()) {
+            cerr << "Signal ID " << signalId << " in volume -> signal map is not unique" << endl;
+            exit(1);
+        }
+        signalIds.insert(signalId);
+    }
+    if (signalIds.size() != aliasToSignalId.size()) {
+        cerr << "Signal IDs are not unique" << endl;
+        exit(1);
+    }
+
     int i = 0;
     for (const auto& veto : vetoInfo) {
+        const auto vetoFromProcess = TRestGeant4VetoAnalysisProcess::GetVetoFromString(veto.volume);
         TRestDetectorReadoutPlane plane;
         plane.SetPosition(veto.readoutPosition);
         plane.SetNormal(veto.normal);
@@ -261,10 +295,21 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         module.SetOrigin(-1.0 * size / 2.0);
 
         TRestDetectorReadoutChannel channel;
-        const int channelId = i + 1000;  // TODO: set correct ID
+        int channelId = aliasToSignalId[vetoFromProcess.alias];
+        if (channelId == 0) {
+            // not found
+            cout << "WARNING: Channel ID not found for alias " << vetoFromProcess.alias << endl;
+            // exit(1);
+            channelId = 10000 + i;
+            // verify this is not in signalIds
+            if (signalIds.find(channelId) != signalIds.end()) {
+                cerr << "Signal ID " << channelId << " is not unique" << endl;
+                exit(1);
+            }
+        }
         channel.SetChannelID(channelId);
         channel.SetDaqID(channelId);
-        channel.SetChannelName(veto.volume);
+        channel.SetChannelName(vetoFromProcess.alias);
         channel.SetChannelType("veto");
 
         referenceVetoNameToDaqId[veto.volume] = channelId;
