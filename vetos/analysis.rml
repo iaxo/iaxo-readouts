@@ -147,6 +147,10 @@
             <parameter name="noiseLevel" value="100"/>
         </addProcess>
 
+        <addProcess type="TRestRawPeaksFinderProcess" name="RawPeaks" value="OFF">
+        </addProcess>
+
+
     </TRestProcessRunner>
 
     <addTask type="processEvents" value="ON"/>
