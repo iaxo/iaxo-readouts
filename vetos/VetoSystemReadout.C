@@ -40,21 +40,21 @@ struct VetoInfo {
 std::map<string, int> referenceVetoNameToDaqId;
 
 std::map<string, int> aliasToSignalId = {
-    {"Top_L2_N1", 1},     {"Top_L2_N2", 2},     {"Top_L2_N3", 3},     {"Top_L2_N4", 4},
-    {"Top_L3_N1", 5},     {"Top_L3_N2", 6},     {"Top_L3_N3", 7},     {"Top_L3_N4", 8},
-    {"Bottom_L1_N1", 9},  {"Bottom_L1_N2", 10}, {"Bottom_L1_N3", 11}, {"Bottom_L1_N4", 12},
-    {"Bottom_L2_N1", 13}, {"Bottom_L2_N2", 14}, {"Bottom_L2_N3", 15}, {"Bottom_L2_N4", 16},
-    {"Bottom_L3_N1", 17}, {"Bottom_L3_N2", 18}, {"Bottom_L3_N3", 19}, {"Bottom_L3_N4", 20},
-    {"Right_L1_N1", 21},  {"Right_L1_N2", 22},  {"Right_L1_N3", 23},  {"Right_L2_N1", 24},
-    {"Right_L2_N2", 25},  {"Right_L2_N3", 26},  {"Right_L3_N1", 27},  {"Right_L3_N2", 28},
-    {"Right_L3_N3", 29},  {"Left_L1_N1", 30},   {"Left_L1_N2", 31},   {"Left_L1_N3", 32},
-    {"Left_L2_N1", 33},   {"Left_L2_N2", 34},   {"Left_L2_N3", 35},   {"Left_L3_N1", 36},
-    {"Left_L3_N2", 37},   {"Left_L3_N3", 38},   {"Top_L1_N1", 39},    {"Top_L1_N2", 40},
-    {"Top_L1_N3", 41},    {"Back_L1_N1", 42},   {"Back_L1_N2", 43},   {"Back_L1_N3", 44},
-    {"Back_L2_N1", 45},   {"Back_L2_N2", 46},   {"Back_L2_N3", 47},   {"Back_L3_N1", 48},
-    {"Back_L3_N2", 49},   {"Back_L3_N3", 50},   {"Front_L1_N1", 51},  {"Front_L1_N2", 52},
-    {"Front_L1_N3", 53},  {"Front_L2_N1", 54},  {"Front_L2_N2", 55},  {"Front_L2_N3", 56},
-    {"Front_L3_N1", 57},  {"Front_L3_N2", 58},  {"Front_L3_N3", 59},
+    {"Top_L1_N1", 4713},    {"Top_L1_N2", 4735},    {"Top_L1_N3", 4719},    {"Top_L2_N1", 4608},
+    {"Top_L2_N2", 4705},    {"Top_L2_N3", 4744},    {"Top_L2_N4", 4688},    {"Top_L3_N1", 4692},
+    {"Top_L3_N2", 4740},    {"Top_L3_N3", 4709},    {"Top_L3_N4", 4723},    {"Bottom_L1_N1", 4625},
+    {"Bottom_L1_N2", 4641}, {"Bottom_L1_N3", 4715}, {"Bottom_L1_N4", 4663}, {"Bottom_L2_N1", 4620},
+    {"Bottom_L2_N2", 4637}, {"Bottom_L2_N3", 4668}, {"Bottom_L2_N4", 4647}, {"Bottom_L3_N1", 4684},
+    {"Bottom_L3_N2", 4700}, {"Bottom_L3_N3", 4732}, {"Bottom_L3_N4", 4748}, {"Right_L1_N1", 4791},
+    {"Right_L1_N2", 6000},  {"Right_L1_N3", 7000},  {"Right_L2_N1", 4769},  {"Right_L2_N2", 4812},
+    {"Right_L2_N3", 4785},  {"Right_L3_N1", 4787},  {"Right_L3_N2", 4781},  {"Right_L3_N3", 4807},
+    {"Left_L1_N1", 4876},   {"Left_L1_N2", 4844},   {"Left_L1_N3", 4828},   {"Left_L2_N1", 4872},
+    {"Left_L2_N2", 4849},   {"Left_L2_N3", 4888},   {"Left_L3_N1", 4832},   {"Left_L3_N2", 4867},
+    {"Left_L3_N3", 4853},   {"Back_L1_N1", 4628},   {"Back_L1_N2", 4633},   {"Back_L1_N3", 4651},
+    {"Back_L2_N1", 4660},   {"Back_L2_N2", 4656},   {"Back_L2_N3", 4616},   {"Back_L3_N1", 4676},
+    {"Back_L3_N2", 4697},   {"Back_L3_N3", 4672},   {"Front_L1_N1", 4772},  {"Front_L1_N2", 4804},
+    {"Front_L1_N3", 4820},  {"Front_L2_N1", 4777},  {"Front_L2_N2", 4800},  {"Front_L2_N3", 4756},
+    {"Front_L3_N1", 4795},  {"Front_L3_N2", 4760},  {"Front_L3_N3", 4816},
 };
 
 std::optional<double> extractLength(const std::string& input) {

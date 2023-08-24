@@ -124,7 +124,7 @@
 
         <addProcess type="TRestDetectorHitsToSignalProcess" name="DetectorHitsToSignal" value="ON">
             <parameter name="sampling" value="1ns"/>
-            <parameter name="vetoLightAttenuationLength" value="400cm"/>
+            <parameter name="vetoLightAttenuationLength" value="215cm"/> <!-- 400cm according to manufacturer -->
         </addProcess>
 
         <addProcess type="TRestDetectorSignalToRawSignalProcess" name="DetectorSignalToRaw" value="ON">
@@ -140,6 +140,8 @@
 
             <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
         </addProcess>
+
+        <addProcess type="TRestRawReadoutMetadataProcess" name="readoutMetadataProcess" value="ON"/>
 
         <addProcess type="TRestRawSignalAddNoiseProcess" name="RawNoise" value="OFF">
             <parameter name="noiseLevel" value="100"/>
