@@ -371,6 +371,7 @@ void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo
 
 void CheckUniqueChannels(TRestDetectorReadout* readout) {
     set<int> channelIds;
+    set<int> channelDaqIds;
 
     for (int planeIndex = 0; planeIndex < readout->GetNumberOfReadoutPlanes(); planeIndex++) {
         auto plane = readout->GetReadoutPlane(planeIndex);
@@ -379,15 +380,21 @@ void CheckUniqueChannels(TRestDetectorReadout* readout) {
             for (int channelIndex = 0; channelIndex < module->GetNumberOfChannels(); channelIndex++) {
                 auto channel = module->GetChannel(channelIndex);
                 auto channelId = channel->GetChannelId();
+                auto daqId = channel->GetDaqID();
+
                 channelIds.insert(channelId);
+                channelDaqIds.insert(daqId);
             }
         }
     }
 
-    if (channelIds.size() != readout->GetNumberOfChannels()) {
+    if (channelIds.size() != readout->GetNumberOfChannels() ||
+        channelDaqIds.size() != readout->GetNumberOfChannels() || channelIds.size() == 0) {
         cerr << "Number of channels in readout does not match number of unique channels" << endl;
         exit(1);
     }
+
+    cout << "All channel DAQ ids are unique" << endl;
 }
 
 TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
