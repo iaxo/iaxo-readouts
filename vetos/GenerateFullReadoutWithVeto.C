@@ -309,6 +309,7 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         channel.SetDaqID(channelId);
         channel.SetChannelName(vetoFromProcess.alias);
         channel.SetChannelType("veto");
+        plane.SetType("veto");
 
         referenceVetoNameToDaqId[veto.volume] = channelId;
 

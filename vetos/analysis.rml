@@ -22,7 +22,7 @@
         <parameter name="readOnly" value="false"/>
 
         <addMetadata type="TRestDetectorReadout" name="vetoSystemReadout" file="./vetoSystemReadout.root"/>
-        <!-- <TRestDetectorGas name="Argon-Isobutane 2Pct 10-10E3Vcm" pressure="1.4" file="server"/> -->
+        <TRestDetectorGas name="Argon-Isobutane 2Pct 10-10E3Vcm" pressure="1.4" file="server"/>
 
     </TRestRun>
 
@@ -62,10 +62,10 @@
 
         <addProcess type="TRestGeant4ToDetectorHitsProcess" name="Geant4ToDetectorHits" value="ON">
             <volume name="Chamber_gas"/>
-            <volume name="^scintillatorVolume"/>
+            <volume name="^scintillatorVolume" type="veto"/>
         </addProcess>
 
-        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="OFF">
+        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="ON">
             <parameter name="electricField" value="130" units="V/cm"/>
             <parameter name="poissonElectronExcitation" value="on"/>
         </addProcess>
