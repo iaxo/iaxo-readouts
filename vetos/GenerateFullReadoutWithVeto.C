@@ -369,6 +369,27 @@ void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo
     }
 }
 
+void CheckUniqueChannels(TRestDetectorReadout* readout) {
+    set<int> channelIds;
+
+    for (int planeIndex = 0; planeIndex < readout->GetNumberOfReadoutPlanes(); planeIndex++) {
+        auto plane = readout->GetReadoutPlane(planeIndex);
+        for (int moduleIndex = 0; moduleIndex < plane->GetNumberOfModules(); moduleIndex++) {
+            auto module = plane->GetModule(moduleIndex);
+            for (int channelIndex = 0; channelIndex < module->GetNumberOfChannels(); channelIndex++) {
+                auto channel = module->GetChannel(channelIndex);
+                auto channelId = channel->GetChannelId();
+                channelIds.insert(channelId);
+            }
+        }
+    }
+
+    if (channelIds.size() != readout->GetNumberOfChannels()) {
+        cerr << "Number of channels in readout does not match number of unique channels" << endl;
+        exit(1);
+    }
+}
+
 TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
     const string rmlFile = "../readoutsIAXO.rml";
     const string readoutName = "iaxoD0Readout";
@@ -397,6 +418,8 @@ TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
 
     file = TFile::Open(outputFilename.c_str());
     TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("fullReadout"));
+
+    CheckUniqueChannels(readoutFromFile);
 
     return readoutFromFile;
 }
@@ -452,7 +475,7 @@ void GenerateFullReadoutWithVeto(const char* simulationFilename = "simulation.ro
 
     const auto fullReadout = FullReadout(vetoReadout);
 
-    Draw(vetoInfo, vetoReadout);
+    // Draw(vetoInfo, vetoReadout);
 
     cout << "Finished" << endl;
 }
