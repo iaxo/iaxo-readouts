@@ -195,41 +195,51 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
     gEve->AddElement(readoutPlanePositions);
     gEve->AddElement(readoutPlaneEnd);
 
-    TEvePointSet* point = new TEvePointSet("points");
-    int targetDaqId = 1020;
-
     map<int, TEvePointSet*> vetoNameToPoints;
     for (const auto& [name, daqId] : referenceVetoNameToDaqId) {
+        cout << "Creating point set for " << name << " and DAQ ID: " << daqId << endl;
         vetoNameToPoints[daqId] = new TEvePointSet(name.c_str());
     }
 
-    auto pointSetTest = new TEvePointSet("test");
-
     // generate random points to see if they are inside the veto
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 5000000; i++) {
         double x = gRandom->Uniform(-2000, 2000);
         double y = gRandom->Uniform(-2000, 2000);
         double z = gRandom->Uniform(-2000, 2000);
 
-        Int_t daqId, moduleId, channelId;
+        Int_t daqId = -1, moduleId, channelId;
+        Int_t lastGoodDaqId = -1;
+        int uniqueDaqIds = 0;
         for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
+            auto plane = readout->GetReadoutPlane(p);
+            if (plane->GetType() != "veto") {
+                continue;
+            }
             std::tie(daqId, moduleId, channelId) = readout->GetHitsDaqChannelAtReadoutPlane({x, y, z}, p);
             if (daqId != -1) {
-                break;
+                uniqueDaqIds += 1;
+                lastGoodDaqId = daqId;
             }
         }
+        // cout << "Unique DAQ IDs: " << uniqueDaqIds << endl;
 
-        if (daqId == -1) {
+        if (uniqueDaqIds == 0) {
+            // outside all vetoes
             continue;
         }
-
-        if (daqId != targetDaqId) {
-            // continue;
+        if (uniqueDaqIds > 1) {
+            cerr << "WARNING: More than one readout plane found for point " << x << " " << y << " " << z
+                 << endl;
+            exit(1);
         }
 
-        auto pointSet = vetoNameToPoints[daqId];
-        point->SetNextPoint(x / 10.0, y / 10.0, z / 10.0);
+        // cout << "Point: " << x << " " << y << " " << z << endl;
+        // cout << " - DAQ ID: " << lastGoodDaqId << endl;
 
+        auto pointSet = vetoNameToPoints.at(lastGoodDaqId);
+        // cout << "Point is inside veto " << lastGoodDaqId << " with name" << pointSet->GetName() << endl;
+
+        // cout << "Adding point to " << pointSet->GetName() << " " << x << " " << y << " " << z << endl;
         pointSet->SetNextPoint(x / 10.0, y / 10.0, z / 10.0);
     }
 
@@ -243,11 +253,6 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
         // pointSet->SetMarkerStyle(23);
         gEve->AddElement(pointSet);
     }
-
-    pointSetTest->SetMarkerColor(120);
-    pointSetTest->SetMarkerSize(3);
-    pointSetTest->SetMarkerStyle(23);
-    gEve->AddElement(pointSetTest);
 
     gEve->Redraw3D(kTRUE);
 }
@@ -278,9 +283,15 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
     for (const auto& veto : vetoInfo) {
         const auto vetoFromProcess = TRestGeant4VetoAnalysisProcess::GetVetoFromString(veto.volume);
         TRestDetectorReadoutPlane plane;
-        plane.SetPosition(veto.readoutPosition);
+
+        // if we do not include this delta, some points in the boundaries are not correctly assigned to the
+        // veto this can be a problem if one does not filter hits outside the vetoes. the distance between
+        // vetoes should always be greater than this delta
+        double delta = 1.0;
+
+        plane.SetPosition(veto.readoutPosition - veto.normal * delta);
         plane.SetNormal(veto.normal);
-        plane.SetHeight(veto.height);
+        plane.SetHeight(veto.height + delta * 2);
         plane.SetID(i++);
         plane.SetAxisX(IsTopOrBottom(veto.volume) ? TVector3(1, 0, 0) : TVector3(0, 1, 0));
 
@@ -288,7 +299,7 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         module.SetName(veto.volume);
         module.SetModuleID(0);
 
-        TVector2 size = TVector2(200, 50);
+        TVector2 size = TVector2(200 + delta, 50 + delta);
         module.SetSize(size);
         module.SetOrigin(-1.0 * size / 2.0);
 
@@ -482,7 +493,7 @@ void GenerateFullReadoutWithVeto(const char* simulationFilename = "simulation.ro
 
     const auto fullReadout = FullReadout(vetoReadout);
 
-    // Draw(vetoInfo, vetoReadout);
+    Draw(vetoInfo, fullReadout);
 
     cout << "Finished" << endl;
 }
