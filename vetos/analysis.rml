@@ -143,11 +143,11 @@
 
         <addProcess type="TRestRawReadoutMetadataProcess" name="readoutMetadataProcess" value="ON"/>
 
-        <addProcess type="TRestRawSignalAddNoiseProcess" name="RawNoise" value="OFF">
+        <addProcess type="TRestRawSignalAddNoiseProcess" name="rawNoise" value="OFF">
             <parameter name="noiseLevel" value="100"/>
         </addProcess>
 
-        <addProcess type="TRestRawPeaksFinderProcess" name="RawPeaks" value="OFF">
+        <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaks" value="ON" observable="all">
         </addProcess>
 
 
