@@ -211,11 +211,8 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
         double y = gRandom->Uniform(-2000, 2000);
         double z = gRandom->Uniform(-2000, 2000);
 
-        int daqId = -1;
-        int moduleId = -1;
-        int channelId = -1;
         for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
-            daqId = readout->GetHitsDaqChannelAtReadoutPlane({x, y, z}, moduleId, channelId, p);
+            auto [daqId, moduleId, channelId] = readout->GetHitsDaqChannelAtReadoutPlane({x, y, z}, p);
             if (daqId != -1) {
                 break;
             }
@@ -338,14 +335,10 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
 void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo) {
     std::map<string, int> volumeToChannelId;
     for (const auto veto : vetoInfo) {
-        Int_t moduleId = -1;
-        Int_t channelId = -1;
-        Int_t daqId = -1;
-
         TVector3 position = veto.readoutPosition + veto.normal * (veto.height / 2.0);  // center of veto
 
         for (int p = 0; p < readout->GetNumberOfReadoutPlanes(); p++) {
-            daqId = readout->GetHitsDaqChannelAtReadoutPlane(position, moduleId, channelId, p);
+            auto [daqId, moduleId, channelId] = readout->GetHitsDaqChannelAtReadoutPlane(position, p);
             if (daqId != -1) {
                 break;
             }
@@ -371,6 +364,29 @@ void TestReadout(TRestDetectorReadout* readout, const vector<VetoInfo>& vetoInfo
         cerr << "Mismatching channels found" << endl;
         exit(1);
     }
+}
+
+TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
+    const string rmlFile = "../readoutsIAXO.rml";
+    const string readoutName = "iaxoD1Readout";
+    const string outputFilename = "fullReadout.root";
+
+    TFile* file = TFile::Open(outputFilename.c_str(), "RECREATE");
+
+    TRestDetectorReadout readout(rmlFile.c_str(), readoutName.c_str());
+
+    for (int i = 0; i < vetoReadout->GetNumberOfReadoutPlanes(); i++) {
+        auto plane = vetoReadout->GetReadoutPlane(i);
+        readout.AddReadoutPlane(*plane);
+    }
+
+    readout.Write("fullReadout");
+    file->Close();
+
+    file = TFile::Open(outputFilename.c_str());
+    TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("fullReadout"));
+
+    return readoutFromFile;
 }
 
 void VetoSystemReadout(const char* simulationFilename = "simulation.root") {
@@ -417,12 +433,14 @@ void VetoSystemReadout(const char* simulationFilename = "simulation.root") {
         cout << VetoInfoToString(info) << endl;
     }
 
-    const auto readout = GenerateReadout(vetoInfo);
+    const auto vetoReadout = GenerateReadout(vetoInfo);
 
-    TestReadout(readout, vetoInfo);
+    TestReadout(vetoReadout, vetoInfo);
     cout << "Done testing readout" << endl;
 
-    Draw(vetoInfo, readout);
+    const auto fullReadout = FullReadout(vetoReadout);
+
+    Draw(vetoInfo, vetoReadout);
 
     cout << "Finished" << endl;
 }
