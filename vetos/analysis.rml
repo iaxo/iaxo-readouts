@@ -141,10 +141,10 @@
             <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/>
             <parameter name="triggerDelay" value="96"/>
 
-            <parameter name="sampling" value="20ns"/>
-            <parameter name="shapingTime" value="8.2ns"/> <!-- 869.2ns -->
-            <parameter name="calibrationEnergy" value="(0,4)keV"/>
-            <parameter name="calibrationRange" value="(0.30,0.70)"/>
+            <parameter name="sampling" value="10ns"/>
+            <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
+            <parameter name="calibrationEnergy" value="(0,10)keV"/>
+            <parameter name="calibrationRange" value="(0.05,0.50)"/>
 
             <parameter name="samplingVeto" value="200ns"/>
             <parameter name="shapingTimeVeto" value="869.2ns"/> <!-- 869.2ns -->
@@ -154,7 +154,8 @@
 
         <addProcess type="TRestRawReadoutMetadataProcess" name="readoutMetadataProcess" value="ON"/>
 
-        <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaks" value="OFF" observable="all">
+        <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaks" value="ON" observable="all">
+            <parameter name="channelType" value="veto"/> <!-- only apply to veto signals -->
         </addProcess>
 
 
