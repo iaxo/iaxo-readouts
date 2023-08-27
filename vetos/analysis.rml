@@ -156,6 +156,8 @@
 
         <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaks" value="ON" observable="all">
             <parameter name="channelType" value="veto"/> <!-- only apply to veto signals -->
+            <parameter name="baselineRange" value="(0,5)"/> <!-- compute baseline on this range (in time bins) -->
+            <parameter name="thresholdOverBaseline" value="1"/> <!-- compute baseline on this range (in time bins) -->
         </addProcess>
 
 
