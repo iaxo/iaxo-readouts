@@ -409,7 +409,6 @@ void CheckUniqueChannels(TRestDetectorReadout* readout) {
 }
 
 TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
-    const string rmlFile = "../readoutsIAXO.rml";
     const string readoutName = "iaxoD0Readout";
     const string outputFilename = "fullReadout.root";
     const string micromegasReadoutFile = "../readouts.root";
@@ -419,7 +418,7 @@ TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
     TRestDetectorReadout* readout =
         dynamic_cast<TRestDetectorReadout*>(readoutFile->Get(readoutName.c_str()));
     if (!readout) {
-        cerr << "Failed to load readout " << readoutName << " from file " << rmlFile << endl;
+        cerr << "Failed to load readout " << readoutName << endl;
         exit(1);
     }
 
