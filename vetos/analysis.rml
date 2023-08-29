@@ -62,19 +62,19 @@
             <volume name="^scintillatorVolume" type="veto"/>
         </addProcess>
 
-        <addProcess type="TRestDetectorHitsRotateAndTranslateProcess" name="rotation" value="ON">
-            <parameter name="rotationCenter" value="(0,0,0)mm"/>
-            <parameter name="rotationZ" value="45deg"/> <!-- Double check if this should be + or - -->
+        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="ON">
+            <parameter name="electricField" value="130" units="V/cm"/>
+            <parameter name="poissonElectronExcitation" value="on"/>
+        </addProcess>
+
+        <addProcess type="TRestDetectorHitsRotationProcess" name="rotation" value="ON">
+            <parameter name="center" value="(0,0,0)mm"/>
+            <parameter name="axis" value="(0,0,1)"/>
+            <parameter name="angle" value="45deg"/> <!-- Double check if this should be + or - -->
         </addProcess>
 
         <addProcess type="TRestDetectorLightAttenuationProcess" name="LightAttenuation" value="ON">
             <parameter name="vetoLightAttenuationLength" value="215cm"/> <!-- 400cm according to manufacturer -->
-        </addProcess>
-
-        <!-- Should this be here after rotation? -->
-        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="ON">
-            <parameter name="electricField" value="130" units="V/cm"/>
-            <parameter name="poissonElectronExcitation" value="on"/>
         </addProcess>
 
         <addProcess type="TRestDetectorHitsAnalysisProcess" name="hitsAna" value="ON">
