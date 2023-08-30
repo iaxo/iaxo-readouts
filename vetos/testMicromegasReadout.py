@@ -11,10 +11,8 @@ readout = file.Get("fullReadout")
 
 plane_index = 0  # this is the micromegas readout plane
 
-# iterate over an x,y grid of 30x30 every 0.1
-
-side_limit = 45
-step = 0.025
+side_limit = 32
+step = 0.01
 
 x = np.arange(-side_limit, side_limit, step)
 y = np.arange(-side_limit, side_limit, step)
@@ -43,7 +41,7 @@ unique, counts = np.unique(Z[~np.isnan(Z)], return_counts=True)
 # print the number of unique values
 print(f"number of unique values: {len(unique)}")
 
-plt.figure(figsize=(12, 12))
+plt.figure(figsize=(14, 14))
 
 plt.pcolormesh(X, Y, Z, cmap='jet')
 # plot a scatter but show the daqs as text
