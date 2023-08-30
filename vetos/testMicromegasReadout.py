@@ -13,7 +13,7 @@ readout = file.Get("fullReadout")
 plane_index = 0  # this is the micromegas readout plane
 
 side_limit = 30.5
-step = 0.01
+step = 0.1
 
 x = np.arange(-side_limit, side_limit, step)
 y = np.arange(-side_limit, side_limit, step)
@@ -47,8 +47,6 @@ tab20_range1 = plt.cm.get_cmap("tab20", num_colors_range1)
 tab20_range2 = plt.cm.get_cmap("tab20", num_colors_range2)
 colormap_range1 = mcolors.ListedColormap([tab20_range1(i % num_colors_range1) for i in range(num_colors_range1)])
 colormap_range2 = mcolors.ListedColormap([tab20_range2(i % num_colors_range2) for i in range(num_colors_range2)])
-
-# Combine the two colormaps into a single colormap
 combined_colormap = mcolors.ListedColormap(list(colormap_range1.colors) + list(colormap_range2.colors))
 
 # Define the boundaries for the two ranges
@@ -72,4 +70,5 @@ plt.ylim(-side_limit, side_limit)
 plt.gca().set_aspect("equal", adjustable="box")
 plt.tight_layout()
 
-plt.savefig("micromegasReadout.pdf")
+# save as a very high quality png
+plt.savefig("readout.png", dpi=600)
