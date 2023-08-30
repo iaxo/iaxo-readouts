@@ -15,7 +15,9 @@ plane_index = 0  # this is the micromegas readout plane
 
 readout_size = 60.0
 side_limit = readout_size / 2 + 0.5
-step = 0.005
+step = 0.02
+
+print(f"side limit: {side_limit}, step: {step}")
 
 x = np.arange(-side_limit, side_limit, step)
 y = np.arange(-side_limit, side_limit, step)
@@ -26,12 +28,14 @@ Z = np.zeros((len(x), len(y)))
 
 micromegas_plane_id = 0
 
+channel_id_to_daq_id = {}
 # use tqdm to show a progress bar
 for i in tqdm.tqdm(range(len(x))):
     for j in range(len(y)):
         position = ROOT.TVector3(x[i], y[j], 0)
         daq_id, module_id, channel_id = readout.GetHitsDaqChannelAtReadoutPlane(position, micromegas_plane_id)
         Z[i][j] = channel_id
+        channel_id_to_daq_id[channel_id] = daq_id
 
 # Draw Z as a color map, excluding values of -1
 
@@ -43,6 +47,12 @@ unique, counts = np.unique(Z[~np.isnan(Z)], return_counts=True)
 # print the number of unique values
 print(f"number of unique values: {len(unique)}")
 
+# save X, Y, Z to disk in a single file
+np.savez_compressed('data.npz', X=X, Y=Y, Z=Z, channel_id_to_daq_id=channel_id_to_daq_id)
+
+# save the channel to daq mapping to disk
+np.save("channel_to_daq.npy", channel_id_to_daq_id)
+
 
 def custom_colormap():
     colors = [
@@ -52,7 +62,6 @@ def custom_colormap():
         (1.0, 'green')
     ]
     cmap = LinearSegmentedColormap.from_list('custom_colormap', colors, N=240)
-    # cmap should have 240 distinct values
     return cmap
 
 
@@ -74,4 +83,4 @@ plt.gca().set_aspect("equal", adjustable="box")
 plt.tight_layout()
 
 # save as a very high quality png
-plt.savefig("readout.png", dpi=800)
+plt.savefig("readout.png", dpi=600)
