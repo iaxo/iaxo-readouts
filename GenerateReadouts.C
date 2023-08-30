@@ -16,7 +16,7 @@ void GenerateReadouts() {
         readout.Write(readoutName.c_str());
 
         // print some readout info
-        readout.PrintMetadata();
+        readout.PrintMetadata(3);
     }
 
     file->Close();

@@ -62,15 +62,17 @@
             <volume name="^scintillatorVolume" type="veto"/>
         </addProcess>
 
-        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="ON">
-            <parameter name="electricField" value="130" units="V/cm"/>
-            <parameter name="poissonElectronExcitation" value="on"/>
-        </addProcess>
-
         <addProcess type="TRestDetectorHitsRotationProcess" name="rotation" value="ON">
             <parameter name="center" value="(0,0,0)mm"/>
             <parameter name="axis" value="(0,0,1)"/>
             <parameter name="angle" value="45deg"/> <!-- Double check if this should be + or - -->
+        </addProcess>
+
+        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="OFF">
+            <parameter name="electricField" value="130" units="V/cm"/>
+            <parameter name="poissonElectronExcitation" value="on"/>
+            <parameter name="checkIsInside"
+                       value="false"/> <!-- This will drift all hits even those outside readout (but are in TPC)-->
         </addProcess>
 
         <addProcess type="TRestDetectorLightAttenuationProcess" name="LightAttenuation" value="ON">
