@@ -1,3 +1,4 @@
+
 # IAXO Readouts
 
 This repository contains all the readout related files for IAXO.
@@ -19,3 +20,4 @@ The final file, in this case `readouts.root`, contains all the readouts defined 
 
 In order to perform the readout generation the macro `generateReadouts.C` is provided. Calling the macro without any
 arguments will generate all the readouts into a single `readouts.root` file.
+
