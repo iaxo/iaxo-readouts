@@ -491,7 +491,7 @@ void GenerateFullReadoutWithVeto(const char* simulationFilename = "simulation.ro
     cout << "Done testing readout" << endl;
 
     const auto fullReadout = FullReadout(vetoReadout);
-    fullReadout.PrintMetadata();
+    fullReadout->PrintMetadata(3);
 
     Draw(vetoInfo, fullReadout);
 
