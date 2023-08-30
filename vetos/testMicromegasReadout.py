@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tqdm as tqdm
 import matplotlib.colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap
 
 file = ROOT.TFile("fullReadout.root")
 
@@ -12,8 +13,9 @@ readout = file.Get("fullReadout")
 
 plane_index = 0  # this is the micromegas readout plane
 
-side_limit = 30.5
-step = 0.1
+readout_size = 60.0
+side_limit = readout_size / 2 + 0.5
+step = 0.005
 
 x = np.arange(-side_limit, side_limit, step)
 y = np.arange(-side_limit, side_limit, step)
@@ -40,26 +42,27 @@ unique, counts = np.unique(Z[~np.isnan(Z)], return_counts=True)
 
 # print the number of unique values
 print(f"number of unique values: {len(unique)}")
-# Create two separate colormaps for the two ranges
-num_colors_range1 = 60  # 0 to 119
-num_colors_range2 = 60  # 120 to 239
-tab20_range1 = plt.cm.get_cmap("tab20", num_colors_range1)
-tab20_range2 = plt.cm.get_cmap("tab20", num_colors_range2)
-colormap_range1 = mcolors.ListedColormap([tab20_range1(i % num_colors_range1) for i in range(num_colors_range1)])
-colormap_range2 = mcolors.ListedColormap([tab20_range2(i % num_colors_range2) for i in range(num_colors_range2)])
-combined_colormap = mcolors.ListedColormap(list(colormap_range1.colors) + list(colormap_range2.colors))
 
-# Define the boundaries for the two ranges
-boundaries = [-0.5, 119.5, 239.5]  # Adjusted to have 0 in the middle
 
-# Normalize the values based on the boundaries
-norm = mcolors.BoundaryNorm(boundaries, combined_colormap.N)
+def custom_colormap():
+    colors = [
+        (0.0, 'blue'),
+        (0.5, 'yellow'),
+        (0.5, 'magenta'),
+        (1.0, 'green')
+    ]
+    cmap = LinearSegmentedColormap.from_list('custom_colormap', colors, N=240)
+    # cmap should have 240 distinct values
+    return cmap
+
+
+cmap = custom_colormap()
 
 plt.figure(figsize=(14, 12))
-plt.pcolormesh(X, Y, Z, cmap=combined_colormap, norm=norm)
+plt.pcolormesh(X, Y, Z, cmap=cmap)
 
 cbar = plt.colorbar(ticks=np.arange(0, 240, 10), format="%d", fraction=0.046, pad=0.04)  # Tick every 5 IDs
-cbar.set_label("Channel ID", fontsize=14)
+cbar.set_label("Channel", fontsize=14)
 
 plt.xlabel("X [mm]", fontsize=14)
 plt.ylabel("Y [mm]", fontsize=14)
@@ -71,4 +74,4 @@ plt.gca().set_aspect("equal", adjustable="box")
 plt.tight_layout()
 
 # save as a very high quality png
-plt.savefig("readout.png", dpi=600)
+plt.savefig("readout.png", dpi=800)
