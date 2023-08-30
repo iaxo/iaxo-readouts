@@ -14,6 +14,9 @@ void GenerateReadouts() {
     for (const auto& readoutName : readoutNames) {
         TRestDetectorReadout readout(rmlFile.c_str(), readoutName.c_str());
         readout.Write(readoutName.c_str());
+
+        // print some readout info
+        readout.PrintMetadata();
     }
 
     file->Close();
