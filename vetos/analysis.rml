@@ -160,12 +160,16 @@
             <parameter name="window" value="5"/> <!-- window to group peaks -->
         </addProcess>
 
-        <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaTPC" value="ON" observable="all">
-            <parameter name="channelType" value="tpc"/>
+        <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaTPC" value="ON">
+            <parameter name="channelTypes" value="tpc"/>
+            <observable name="NumberOfSignals" value="ON"/>
+            <observable name="NumberOfGoodSignals" value="ON"/>
         </addProcess>
 
-        <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaVeto" value="ON" observable="all">
-            <parameter name="channelType" value="veto"/>
+        <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaVeto" value="ON">
+            <parameter name="channelTypes" value="veto"/>
+            <observable name="NumberOfSignals" value="ON"/>
+            <observable name="NumberOfGoodSignals" value="ON"/>
         </addProcess>
 
     </TRestProcessRunner>
