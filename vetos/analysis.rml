@@ -135,8 +135,8 @@
         <addProcess type="TRestDetectorSignalToRawSignalProcess" name="DetectorSignalToRaw" value="ON">
             <parameter name="nPoints" value="512"/>
 
-            <parameter name="triggerMode" value="observable"/>
-            <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/>
+            <parameter name="triggerMode" value="firstDepositTPC"/>
+            <!-- <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/> -->
             <parameter name="triggerDelay" value="96"/>
 
             <parameter name="sampling" value="20ns"/>
