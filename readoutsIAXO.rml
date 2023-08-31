@@ -24,7 +24,8 @@
 
         <parameter name="mappingNodes" value="0"/>
         <include file="microbulkModule.rml"/>
-        <readoutPlane position="(0,0,-15)mm" normal="(0,0,1)" height="30mm" rotation="0deg" chargeCollection="1">
+        <readoutPlane position="(0,0,-15)mm" normal="(0,0,1)" name="micromegas" type="tpc" height="30mm" rotation="0deg"
+                      chargeCollection="1">
             <addReadoutModule id="0" name="module" origin="(-0.5*nChannels*pitch,-0.5*nChannels*pitch)" rotation="0"
                               decodingFile="./decoding/IAXOD0.dec" firstDaqChannel="${CARD_ID}*72*4"/>
         </readoutPlane>
@@ -41,7 +42,8 @@
 
         <parameter name="mappingNodes" value="0"/>
         <include file="microbulkModule.rml"/>
-        <readoutPlane position="(0,0,-15)mm" normal="(0,0,1)" height="30mm" rotation="0deg" chargeCollection="1">
+        <readoutPlane position="(0,0,-15)mm" normal="(0,0,1)" name="micromegas" type="tpc" height="30mm" rotation="0deg"
+                      chargeCollection="1">
             <addReadoutModule id="0" name="module" origin="(-0.5*nChannels*pitch,-0.5*nChannels*pitch)" rotation="0"
                               decodingFile="./decoding/IAXOD1.dec" firstDaqChannel="${CARD_ID}*72*4"/>
         </readoutPlane>

@@ -160,6 +160,14 @@
             <parameter name="window" value="5"/> <!-- window to group peaks -->
         </addProcess>
 
+        <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaTPC" value="ON" observable="all">
+            <parameter name="channelType" value="tpc"/>
+        </addProcess>
+
+        <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaVeto" value="ON" observable="all">
+            <parameter name="channelType" value="veto"/>
+        </addProcess>
+
     </TRestProcessRunner>
 
     <addTask type="processEvents" value="ON"/>
