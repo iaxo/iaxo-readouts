@@ -17,7 +17,7 @@
         <parameter name="runDescription" value="empty"/>2
         <parameter name="user" value="${USER}"/>
         <parameter name="verboseLevel" value="silent"/>
-        <parameter name="overwrite" val  ue="off"/>
+        <parameter name="overwrite" value="off"/>
         <parameter name="readOnly" value="false"/>
 
         <!--  <addMetadata type="TRestDetectorReadout" name="vetoSystemReadout" file="./vetoSystemReadout.root"/>-->
