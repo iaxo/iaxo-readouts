@@ -68,7 +68,7 @@
             <parameter name="angle" value="45deg"/> <!-- Double check if this should be + or - -->
         </addProcess>
 
-        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="OFF">
+        <addProcess type="TRestDetectorElectronDiffusionProcess" name="ElectronDiffusion" value="ON">
             <parameter name="electricField" value="130" units="V/cm"/>
             <parameter name="poissonElectronExcitation" value="on"/>
             <parameter name="checkIsInside"
@@ -139,9 +139,9 @@
             <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/>
             <parameter name="triggerDelay" value="96"/>
 
-            <parameter name="sampling" value="10ns"/>
+            <parameter name="sampling" value="20ns"/>
             <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
-            <parameter name="calibrationEnergy" value="(0,10)keV"/>
+            <parameter name="calibrationEnergy" value="(0,20)keV"/>
             <parameter name="calibrationRange" value="(0.05,0.50)"/>
 
             <parameter name="samplingVeto" value="200ns"/>
@@ -152,7 +152,15 @@
 
         <addProcess type="TRestRawReadoutMetadataProcess" name="readoutMetadataProcess" value="ON"/>
 
-        <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaks" value="ON" observable="all">
+        <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaksTPC" value="ON" observable="all">
+            <parameter name="channelType" value="tpc"/> <!-- only apply to veto signals -->
+            <parameter name="baselineRange" value="(0,5)"/> <!-- compute baseline on this range (in time bins) -->
+            <parameter name="thresholdOverBaseline" value="1"/> <!-- compute baseline on this range (in time bins) -->
+            <parameter name="distance" value="5"/> <!-- minimum distance between peaks in a single signal -->
+            <parameter name="window" value="5"/> <!-- window to group peaks -->
+        </addProcess>
+
+        <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaksVeto" value="ON" observable="all">
             <parameter name="channelType" value="veto"/> <!-- only apply to veto signals -->
             <parameter name="baselineRange" value="(0,5)"/> <!-- compute baseline on this range (in time bins) -->
             <parameter name="thresholdOverBaseline" value="1"/> <!-- compute baseline on this range (in time bins) -->
@@ -161,13 +169,13 @@
         </addProcess>
 
         <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaTPC" value="ON">
-            <parameter name="channelTypes" value="tpc"/>
+            <parameter name="channelType" value="tpc"/>
             <observable name="NumberOfSignals" value="ON"/>
             <observable name="NumberOfGoodSignals" value="ON"/>
         </addProcess>
 
         <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaVeto" value="ON">
-            <parameter name="channelTypes" value="veto"/>
+            <parameter name="channelType" value="veto"/>
             <observable name="NumberOfSignals" value="ON"/>
             <observable name="NumberOfGoodSignals" value="ON"/>
         </addProcess>
