@@ -283,6 +283,7 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
     for (const auto& veto : vetoInfo) {
         const auto vetoFromProcess = TRestGeant4VetoAnalysisProcess::GetVetoFromString(veto.volume);
         TRestDetectorReadoutPlane plane;
+        plane.SetType("veto");
 
         // if we do not include this delta, some points in the boundaries are not correctly assigned to the
         // veto this can be a problem if one does not filter hits outside the vetoes. the distance between
@@ -319,8 +320,6 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         channel.SetChannelID(channelId);
         channel.SetDaqID(channelId);
         channel.SetChannelName(vetoFromProcess.alias);
-        channel.SetChannelType("veto");
-        plane.SetType("veto");
 
         referenceVetoNameToDaqId[veto.volume] = channelId;
 
