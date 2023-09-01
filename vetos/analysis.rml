@@ -141,12 +141,12 @@
             <observable name="triggerTimeTPC" value="ON"/>
 
             <parameter name="sampling" value="20ns"/>
-            <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
+            <parameter name="shapingTime" value="1200ns"/> <!-- 869.2ns -->
             <parameter name="calibrationEnergy" value="(0,5)keV"/>
             <parameter name="calibrationRange" value="(0.05,0.50)"/>
 
             <parameter name="samplingVeto" value="500ns"/>
-            <parameter name="shapingTimeVeto" value="869.2ns"/> <!-- 869.2ns -->
+            <parameter name="shapingTimeVeto" value="3000ns"/> <!-- 869.2ns -->
             <parameter name="calibrationEnergyVeto" value="(0,10)MeV"/>
             <parameter name="calibrationRangeVeto" value="(0.05,0.50)"/>
         </addProcess>
