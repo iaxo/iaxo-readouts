@@ -137,14 +137,15 @@
 
             <parameter name="triggerMode" value="integralThresholdTPC"/>
             <!-- <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/> -->
-            <parameter name="triggerDelay" value="96"/>
+            <parameter name="triggerDelay" value="128"/>
+            <observable name="triggerTimeTPC" value="ON"/>
 
             <parameter name="sampling" value="20ns"/>
             <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
             <parameter name="calibrationEnergy" value="(0,5)keV"/>
             <parameter name="calibrationRange" value="(0.05,0.50)"/>
 
-            <parameter name="samplingVeto" value="200ns"/>
+            <parameter name="samplingVeto" value="500ns"/>
             <parameter name="shapingTimeVeto" value="869.2ns"/> <!-- 869.2ns -->
             <parameter name="calibrationEnergyVeto" value="(0,10)MeV"/>
             <parameter name="calibrationRangeVeto" value="(0.05,0.50)"/>
