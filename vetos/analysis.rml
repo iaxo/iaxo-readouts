@@ -135,13 +135,13 @@
         <addProcess type="TRestDetectorSignalToRawSignalProcess" name="DetectorSignalToRaw" value="ON">
             <parameter name="nPoints" value="512"/>
 
-            <parameter name="triggerMode" value="firstDepositTPC"/>
+            <parameter name="triggerMode" value="integralThresholdTPC"/>
             <!-- <parameter name="triggerModeObservableName" value="g4Ana_sensitiveVolumeFirstHitTime"/> -->
             <parameter name="triggerDelay" value="96"/>
 
             <parameter name="sampling" value="20ns"/>
             <parameter name="shapingTime" value="869.2ns"/> <!-- 869.2ns -->
-            <parameter name="calibrationEnergy" value="(0,20)keV"/>
+            <parameter name="calibrationEnergy" value="(0,5)keV"/>
             <parameter name="calibrationRange" value="(0.05,0.50)"/>
 
             <parameter name="samplingVeto" value="200ns"/>
@@ -151,6 +151,10 @@
         </addProcess>
 
         <addProcess type="TRestRawReadoutMetadataProcess" name="readoutMetadataProcess" value="ON"/>
+
+        <addProcess type="TRestRawSignalRangeReductionProcess" name="RangeReduction" value="ON" verboseLevel="info">
+            <parameter name="resolutionInBits" value="12"/>
+        </addProcess>
 
         <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaksTPC" value="ON" observable="all">
             <parameter name="channelType" value="tpc"/> <!-- only apply to veto signals -->
