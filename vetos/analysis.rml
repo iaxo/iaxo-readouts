@@ -162,7 +162,7 @@
             <parameter name="baselineRange" value="(0,5)"/> <!-- compute baseline on this range (in time bins) -->
             <parameter name="thresholdOverBaseline" value="1"/> <!-- compute baseline on this range (in time bins) -->
             <parameter name="distance" value="5"/> <!-- minimum distance between peaks in a single signal -->
-            <parameter name="window" value="5"/> <!-- window to group peaks -->
+            <parameter name="window" value="20"/> <!-- window to group peaks -->
         </addProcess>
 
         <addProcess type="TRestRawPeaksFinderProcess" name="rawPeaksVeto" value="ON" observable="all">
@@ -170,7 +170,7 @@
             <parameter name="baselineRange" value="(0,5)"/> <!-- compute baseline on this range (in time bins) -->
             <parameter name="thresholdOverBaseline" value="1"/> <!-- compute baseline on this range (in time bins) -->
             <parameter name="distance" value="5"/> <!-- minimum distance between peaks in a single signal -->
-            <parameter name="window" value="5"/> <!-- window to group peaks -->
+            <parameter name="window" value="20"/> <!-- window to group peaks -->
         </addProcess>
 
         <addProcess type="TRestRawSignalAnalysisProcess" name="rawAnaTPC" value="ON">
