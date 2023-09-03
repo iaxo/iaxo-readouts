@@ -62,7 +62,7 @@
             <volume name="^scintillatorVolume" type="veto"/>
         </addProcess>
 
-        <addProcess type="TRestDetectorHitsRotationProcess" name="rotation" value="ON">
+        <addProcess type="TRestDetectorHitsRotationProcess" name="hitsRotation" value="ON">
             <parameter name="center" value="(0,0,0)mm"/>
             <parameter name="axis" value="(0,0,1)"/>
             <parameter name="angle" value="45deg"/> <!-- Double check if this should be + or - -->
