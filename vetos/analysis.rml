@@ -82,8 +82,8 @@
         <addProcess type="TRestDetectorHitsReadoutAnalysisProcess" name="hitsReadoutAnalysis" value="ON"
                     observable="all">
             <parameter name="channelType" value="tpc"/>
-            <parameter name="fiducialPosition" value="(0,10,20)"/>
-            <parameter name="fiducialDiameter" value="20"/>
+            <parameter name="fiducialPosition" value="(0,0,0)"/>
+            <parameter name="fiducialDiameter" value="30"/> <!-- Mylar window -->
         </addProcess>
 
         <addProcess type="TRestDetectorHitsToSignalProcess" name="DetectorHitsToSignal" value="ON">
