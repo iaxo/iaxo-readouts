@@ -20,13 +20,12 @@
         <parameter name="overwrite" value="off"/>
         <parameter name="readOnly" value="false"/>
 
-        <!--  <addMetadata type="TRestDetectorReadout" name="vetoSystemReadout" file="./vetoSystemReadout.root"/>-->
         <addMetadata type="TRestDetectorReadout" name="fullReadout" file="./fullReadout.root"/>
 
         <TRestDetectorGas name="Argon-Isobutane 2Pct 10-10E3Vcm" pressure="1.4" file="server"/>
     </TRestRun>
 
-    <TRestProcessRunner name="TemplateEventProcess" verboseLevel="silent">
+    <TRestProcessRunner name="EventProcess" verboseLevel="silent">
 
         <parameter name="eventsToProcess" value="0"/>
         <parameter name="pureAnalysisOutput" value="ON"/>

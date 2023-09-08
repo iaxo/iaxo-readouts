@@ -37,6 +37,11 @@ struct VetoInfo {
     double height;  // height of the readout plane: distance between readout and the limit of the veto
 };
 
+const vector<string> readoutNames = {"iaxoD0Readout", "iaxoD1Readout"};
+const string fullReadoutFile = "../../readouts/readoutComplete.root";
+const string micromegasReadoutFile = "../../readouts/readoutMicromegas.root";
+const string vetoSystemReadoutFile = "../../readouts/readoutVetoSystem.root";
+
 std::map<string, int> referenceVetoNameToDaqId;
 
 std::map<string, int> aliasToSignalId = {
@@ -221,8 +226,6 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
                 lastGoodDaqId = daqId;
             }
         }
-        // cout << "Unique DAQ IDs: " << uniqueDaqIds << endl;
-
         if (uniqueDaqIds == 0) {
             // outside all vetoes
             continue;
@@ -233,13 +236,7 @@ void Draw(const vector<VetoInfo>& vetoInfo, TRestDetectorReadout* readout) {
             exit(1);
         }
 
-        // cout << "Point: " << x << " " << y << " " << z << endl;
-        // cout << " - DAQ ID: " << lastGoodDaqId << endl;
-
         auto pointSet = vetoNameToPoints.at(lastGoodDaqId);
-        // cout << "Point is inside veto " << lastGoodDaqId << " with name" << pointSet->GetName() << endl;
-
-        // cout << "Adding point to " << pointSet->GetName() << " " << x << " " << y << " " << z << endl;
         pointSet->SetNextPoint(x / 10.0, y / 10.0, z / 10.0);
     }
 
@@ -332,14 +329,13 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         readout.AddReadoutPlane(plane);
     }
 
-    const string readoutFilename = "vetoSystemReadout.root";
-    auto file = TFile::Open(readoutFilename.c_str(), "RECREATE");
-    readout.Write("vetoSystemReadout");
+    auto file = TFile::Open(vetoSystemReadoutFile.c_str(), "RECREATE");
+    const string readoutName = "vetoSystemReadout";
+    readout.Write(readoutName.c_str());
     file->Close();
 
-    file = TFile::Open(readoutFilename.c_str());
-    TRestDetectorReadout* readoutFromFile =
-        dynamic_cast<TRestDetectorReadout*>(file->Get("vetoSystemReadout"));
+    file = TFile::Open(vetoSystemReadoutFile.c_str());
+    TRestDetectorReadout* readoutFromFile = file->Get<TRestDetectorReadout>(readoutName.c_str());
 
     return readoutFromFile;
 }
@@ -407,40 +403,46 @@ void CheckUniqueChannels(TRestDetectorReadout* readout) {
     cout << "All channel DAQ ids are unique" << endl;
 }
 
-TRestDetectorReadout* FullReadout(TRestDetectorReadout* vetoReadout) {
-    const string readoutName = "iaxoD0Readout";
-    const string outputFilename = "fullReadout.root";
-    const string micromegasReadoutFile = "../readouts.root";
-
+void WriteReadoutWithVetoSystem(TRestDetectorReadout* vetoReadout) {
     // TRestDetectorReadout readout(rmlFile.c_str(), readoutName.c_str());
     TFile* readoutFile = TFile::Open(micromegasReadoutFile.c_str());
-    TRestDetectorReadout* readout =
-        dynamic_cast<TRestDetectorReadout*>(readoutFile->Get(readoutName.c_str()));
-    if (!readout) {
-        cerr << "Failed to load readout " << readoutName << endl;
-        exit(1);
+    TFile* outputFile = TFile::Open(fullReadoutFile.c_str(), "RECREATE");
+
+    for (const auto& readoutName : readoutNames) {
+        readoutFile->cd();
+        TRestDetectorReadout* readout =
+            dynamic_cast<TRestDetectorReadout*>(readoutFile->Get(readoutName.c_str()));
+        if (!readout) {
+            cerr << "Failed to load readout " << readoutName << endl;
+            exit(1);
+        }
+
+        for (int i = 0; i < vetoReadout->GetNumberOfReadoutPlanes(); i++) {
+            auto plane = vetoReadout->GetReadoutPlane(i);
+            readout->AddReadoutPlane(*plane);
+        }
+
+        outputFile->cd();
+        readout->Write(readoutName.c_str());
     }
 
-    for (int i = 0; i < vetoReadout->GetNumberOfReadoutPlanes(); i++) {
-        auto plane = vetoReadout->GetReadoutPlane(i);
-        readout->AddReadoutPlane(*plane);
+    outputFile->Close();
+
+    auto file = TFile::Open(fullReadoutFile.c_str());
+
+    for (const auto& readoutName : readoutNames) {
+        TRestDetectorReadout* readoutFromFile = file->Get<TRestDetectorReadout>(readoutName.c_str());
+        if (!readoutFromFile) {
+            cerr << "Failed to load readout " << readoutName << endl;
+            exit(1);
+        }
+        CheckUniqueChannels(readoutFromFile);
     }
 
-    TFile* file = TFile::Open(outputFilename.c_str(), "RECREATE");
-
-    file->cd();
-    readout->Write("fullReadout");
     file->Close();
-
-    file = TFile::Open(outputFilename.c_str());
-    TRestDetectorReadout* readoutFromFile = dynamic_cast<TRestDetectorReadout*>(file->Get("fullReadout"));
-
-    CheckUniqueChannels(readoutFromFile);
-
-    return readoutFromFile;
 }
 
-void GenerateFullReadoutWithVeto(const char* simulationFilename = "simulation.root") {
+void GenerateReadoutsWithVetoSystem(const char* simulationFilename = "simulation.root") {
     TRestRun run(simulationFilename);
     const auto metadata = (TRestGeant4Metadata*)run.GetMetadataClass("TRestGeant4Metadata");
     const auto& geometryInfo = metadata->GetGeant4GeometryInfo();
@@ -454,13 +456,11 @@ void GenerateFullReadoutWithVeto(const char* simulationFilename = "simulation.ro
         cerr << "No veto volumes found" << endl;
         exit(1);
     }
-
     auto vetoLightGuides = GetVolumesFromExpression(geometryInfo, vetoLightGuideExpression);
     if (vetoLightGuides.empty()) {
         cerr << "No veto light guides found" << endl;
         exit(1);
     }
-
     if (vetoVolumes.size() != vetoLightGuides.size()) {
         cerr << "Number of veto volumes and veto light guides do not match" << endl;
         exit(1);
@@ -489,10 +489,20 @@ void GenerateFullReadoutWithVeto(const char* simulationFilename = "simulation.ro
     TestReadout(vetoReadout, vetoInfo);
     cout << "Done testing readout" << endl;
 
-    const auto fullReadout = FullReadout(vetoReadout);
-    fullReadout->PrintMetadata(3);
+    WriteReadoutWithVetoSystem(vetoReadout);
 
-    Draw(vetoInfo, fullReadout);
+    auto file = TFile::Open(fullReadoutFile.c_str());
+
+    for (const auto& readoutName : readoutNames) {
+        TRestDetectorReadout* readoutFromFile =
+            dynamic_cast<TRestDetectorReadout*>(file->Get<TRestDetectorReadout>(readoutName.c_str()));
+        if (!readoutFromFile) {
+            cerr << "Failed to load readout " << readoutName << endl;
+            exit(1);
+        }
+        readoutFromFile->PrintMetadata(2);
+        // Draw(vetoInfo, readoutFromFile);
+    }
 
     cout << "Finished" << endl;
 }

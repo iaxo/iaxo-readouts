@@ -4,10 +4,10 @@
 
 using namespace std;
 
-void GenerateReadouts() {
+void GenerateReadoutsMicromegas() {
     const string rmlFile = "readoutsIAXO.rml";
     const vector<string> readoutNames = {"iaxoD0Readout", "iaxoD1Readout"};
-    const string outputFilename = "readouts.root";
+    const string outputFilename = "../../readouts/readoutMicromegas.root";
 
     TFile* file = TFile::Open(outputFilename.c_str(), "RECREATE");
 
