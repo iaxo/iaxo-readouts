@@ -51,7 +51,7 @@ std::map<string, int> aliasToSignalId = {
     {"Bottom_L1_N2", 4641}, {"Bottom_L1_N3", 4715}, {"Bottom_L1_N4", 4663}, {"Bottom_L2_N1", 4620},
     {"Bottom_L2_N2", 4637}, {"Bottom_L2_N3", 4668}, {"Bottom_L2_N4", 4647}, {"Bottom_L3_N1", 4684},
     {"Bottom_L3_N2", 4700}, {"Bottom_L3_N3", 4732}, {"Bottom_L3_N4", 4748}, {"Right_L1_N1", 4791},
-    {"Right_L1_N2", 6000},  {"Right_L1_N3", 7000},  {"Right_L2_N1", 4769},  {"Right_L2_N2", 4812},
+    {"Right_L1_N2", 4612},  {"Right_L1_N3", 4643},  {"Right_L2_N1", 4769},  {"Right_L2_N2", 4812},
     {"Right_L2_N3", 4785},  {"Right_L3_N1", 4787},  {"Right_L3_N2", 4781},  {"Right_L3_N3", 4807},
     {"Left_L1_N1", 4876},   {"Left_L1_N2", 4844},   {"Left_L1_N3", 4828},   {"Left_L2_N1", 4872},
     {"Left_L2_N2", 4849},   {"Left_L2_N3", 4888},   {"Left_L3_N1", 4832},   {"Left_L3_N2", 4867},
