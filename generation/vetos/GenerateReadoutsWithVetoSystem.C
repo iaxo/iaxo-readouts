@@ -49,10 +49,10 @@ std::map<string, int> aliasToSignalId = {
     {"Top_L1_N2", 4735},
     {"Top_L1_N3", 4719},
     // Top - L2
-    {"Top_L2_N1", 4608},
-    {"Top_L2_N2", 4705},
-    {"Top_L2_N3", 4744},
-    {"Top_L2_N4", 4688},
+    {"Top_L2_N4", 4608},
+    {"Top_L2_N3", 4705},
+    {"Top_L2_N2", 4744},
+    {"Top_L2_N1", 4688},
     // Top - L3
     {"Top_L3_N1", 4692},
     {"Top_L3_N2", 4740},
@@ -65,10 +65,10 @@ std::map<string, int> aliasToSignalId = {
     {"Bottom_L1_N3", 4715},
     {"Bottom_L1_N4", 4663},
     // Bottom - L2
-    {"Bottom_L2_N1", 4620},
-    {"Bottom_L2_N2", 4637},
-    {"Bottom_L2_N3", 4668},
-    {"Bottom_L2_N4", 4647},
+    {"Bottom_L2_N4", 4620},
+    {"Bottom_L2_N3", 4637},
+    {"Bottom_L2_N2", 4668},
+    {"Bottom_L2_N1", 4647},
     // Bottom - L3
     {"Bottom_L3_N1", 4684},
     {"Bottom_L3_N2", 4700},
@@ -102,17 +102,17 @@ std::map<string, int> aliasToSignalId = {
     {"Left_L3_N3", 4853},
 
     // Back - L1
-    {"Back_L1_N1", 4628},
+    {"Back_L1_N3", 4628},
     {"Back_L1_N2", 4633},
-    {"Back_L1_N3", 4651},
+    {"Back_L1_N1", 4651},
     // Back - L2
-    {"Back_L2_N1", 4660},
+    {"Back_L2_N3", 4660},
     {"Back_L2_N2", 4656},
-    {"Back_L2_N3", 4616},
+    {"Back_L2_N1", 4616},
     // Back - L3
-    {"Back_L3_N1", 4676},
+    {"Back_L3_N3", 4676},
     {"Back_L3_N2", 4697},
-    {"Back_L3_N3", 4672},
+    {"Back_L3_N1", 4672},
 
     // Front - L1
     {"Front_L1_N1", 4772},
