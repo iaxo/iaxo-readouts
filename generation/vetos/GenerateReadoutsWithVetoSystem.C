@@ -45,87 +45,87 @@ std::map<string, int> referenceVetoNameToDaqId;
 
 std::map<string, int> aliasToSignalId = {
     // Top - L1
-    {"Top L1 N1", 4713},
-    {"Top L1 N2", 4735},
-    {"Top L1 N3", 4719},
+    {"Top_L1_N1", 4713},
+    {"Top_L1_N2", 4735},
+    {"Top_L1_N3", 4719},
     // Top - L2
-    {"Top L2 N1", 4608},
-    {"Top L2 N2", 4705},
-    {"Top L2 N3", 4744},
-    {"Top L2 N4", 4688},
+    {"Top_L2_N1", 4608},
+    {"Top_L2_N2", 4705},
+    {"Top_L2_N3", 4744},
+    {"Top_L2_N4", 4688},
     // Top - L3
-    {"Top L3 N1", 4692},
-    {"Top L3 N2", 4740},
-    {"Top L3 N3", 4709},
-    {"Top L3 N4", 4723},
+    {"Top_L3_N1", 4692},
+    {"Top_L3_N2", 4740},
+    {"Top_L3_N3", 4709},
+    {"Top_L3_N4", 4723},
 
     // Bottom - L1
-    {"Bottom L1 N1", 4625},
-    {"Bottom L1 N2", 4641},
-    {"Bottom L1 N3", 4715},
-    {"Bottom L1 N4", 4663},
+    {"Bottom_L1_N1", 4625},
+    {"Bottom_L1_N2", 4641},
+    {"Bottom_L1_N3", 4715},
+    {"Bottom_L1_N4", 4663},
     // Bottom - L2
-    {"Bottom L2 N1", 4620},
-    {"Bottom L2 N2", 4637},
-    {"Bottom L2 N3", 4668},
-    {"Bottom L2 N4", 4647},
+    {"Bottom_L2_N1", 4620},
+    {"Bottom_L2_N2", 4637},
+    {"Bottom_L2_N3", 4668},
+    {"Bottom_L2_N4", 4647},
     // Bottom - L3
-    {"Bottom L3 N1", 4684},
-    {"Bottom L3 N2", 4700},
-    {"Bottom L3 N3", 4732},
-    {"Bottom L3 N4", 4748},
+    {"Bottom_L3_N1", 4684},
+    {"Bottom_L3_N2", 4700},
+    {"Bottom_L3_N3", 4732},
+    {"Bottom_L3_N4", 4748},
 
     // Right - L1
-    {"Right L1 N1", 4791},
-    {"Right L1 N2", 4612},
-    {"Right L1 N3", 4643},
+    {"Right_L1_N1", 4791},
+    {"Right_L1_N2", 4612},
+    {"Right_L1_N3", 4643},
     // Right - L2
-    {"Right L2 N1", 4769},
-    {"Right L2 N2", 4812},
-    {"Right L2 N3", 4785},
+    {"Right_L2_N1", 4769},
+    {"Right_L2_N2", 4812},
+    {"Right_L2_N3", 4785},
     // Right - L3
-    {"Right L3 N1", 4787},
-    {"Right L3 N2", 4781},
-    {"Right L3 N3", 4807},
+    {"Right_L3_N1", 4787},
+    {"Right_L3_N2", 4781},
+    {"Right_L3_N3", 4807},
 
     // Left - L1
-    {"Left L1 N1", 4876},
-    {"Left L1 N2", 4844},
-    {"Left L1 N3", 4828},
+    {"Left_L1_N1", 4876},
+    {"Left_L1_N2", 4844},
+    {"Left_L1_N3", 4828},
     // Left - L2
-    {"Left L2 N1", 4872},
-    {"Left L2 N2", 4849},
-    {"Left L2 N3", 4888},
+    {"Left_L2_N1", 4872},
+    {"Left_L2_N2", 4849},
+    {"Left_L2_N3", 4888},
     // Left - L3
-    {"Left L3 N1", 4832},
-    {"Left L3 N2", 4867},
-    {"Left L3 N3", 4853},
+    {"Left_L3_N1", 4832},
+    {"Left_L3_N2", 4867},
+    {"Left_L3_N3", 4853},
 
     // Back - L1
-    {"Back L1 N1", 4628},
-    {"Back L1 N2", 4633},
-    {"Back L1 N3", 4651},
+    {"Back_L1_N1", 4628},
+    {"Back_L1_N2", 4633},
+    {"Back_L1_N3", 4651},
     // Back - L2
-    {"Back L2 N1", 4660},
-    {"Back L2 N2", 4656},
-    {"Back L2 N3", 4616},
+    {"Back_L2_N1", 4660},
+    {"Back_L2_N2", 4656},
+    {"Back_L2_N3", 4616},
     // Back - L3
-    {"Back L3 N1", 4676},
-    {"Back L3 N2", 4697},
-    {"Back L3 N3", 4672},
+    {"Back_L3_N1", 4676},
+    {"Back_L3_N2", 4697},
+    {"Back_L3_N3", 4672},
 
     // Front - L1
-    {"Front L1 N1", 4772},
-    {"Front L1 N2", 4804},
-    {"Front L1 N3", 4820},
+    {"Front_L1_N1", 4772},
+    {"Front_L1_N2", 4804},
+    {"Front_L1_N3", 4820},
     // Front - L2
-    {"Front L2 N1", 4777},
-    {"Front L2 N2", 4800},
-    {"Front L2 N3", 4756},
+    {"Front_L2_N1", 4777},
+    {"Front_L2_N2", 4800},
+    {"Front_L2_N3", 4756},
     // Front - L3
-    {"Front L3 N1", 4795},
-    {"Front L3 N2", 4760},
-    {"Front L3 N3", 4816},
+    {"Front_L3_N1", 4795},
+    {"Front_L3_N2", 4760},
+    {"Front_L3_N3", 4816},
 };
 
 std::optional<double> extractLength(const std::string& input) {
@@ -372,7 +372,7 @@ TRestDetectorReadout* GenerateReadout(const vector<VetoInfo>& vetoInfo) {
         if (channelId == 0) {
             // not found
             cout << "WARNING: Channel ID not found for alias " << vetoFromProcess.alias << endl;
-            // exit(1);
+            exit(1);
             channelId = 10000 + i;
             // verify this is not in signalIds
             if (signalIds.find(channelId) != signalIds.end()) {
