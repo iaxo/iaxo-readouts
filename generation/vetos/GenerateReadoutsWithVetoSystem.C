@@ -49,7 +49,7 @@ std::map<string, int> aliasToSignalId = {
     {"Top_L1_N2", 4735},
     {"Top_L1_N3", 4719},
     // Top - L2
-    {"Top_L2_N4", 4608},
+    {"Top_L2_N4", 4728},
     {"Top_L2_N3", 4705},
     {"Top_L2_N2", 4744},
     {"Top_L2_N1", 4688},
