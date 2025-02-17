@@ -14,10 +14,10 @@ Author: Luis Obis (lobis@unizar.es)
         <parameter name="seed" value="17022"/>
         <parameter name="nRequestedEntries" value="1"/>
 
-        <generator type="cosmic">
+        <generator type="point" position="(0,0,0)" units="mm" >
             <source particle="mu-">
-                <energy type="formula2" name="CosmicMuons" nPoints="10000"/>
-                <angular type="formula2" direction="(0,-1,0)"/>
+                <energy type="mono" energy="10" units="GeV" />
+                <angular type="flux" direction="(0,1,0)" />
             </source>
         </generator>
 
