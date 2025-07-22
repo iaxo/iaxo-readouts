@@ -45,100 +45,100 @@ std::map<string, int> referenceVetoNameToDaqId;
 
 std::map<string, int> aliasToSignalId = {
     // Top - L1
-    {"Top_L1_N4", 4700},
-    {"Top_L1_N3", 4701},
-    {"Top_L1_N2", 4702},
-    {"Top_L1_N1", 4703},
+    {"Top_L1_N4", 4692},
+    {"Top_L1_N3", 4740},
+    {"Top_L1_N2", 4709},
+    {"Top_L1_N1", 4723},
 
     // Top - L2
-    {"Top_L2_N1", 4704},
-    {"Top_L2_N2", 4705},
-    {"Top_L2_N3", 4706},
-    {"Top_L2_N4", 4707},
+    {"Top_L2_N1", 4688},
+    {"Top_L2_N2", 4744},
+    {"Top_L2_N3", 4705},
+    {"Top_L2_N4", 4867},
 
     // Top - L3
-    {"Top_L3_N4", 4708},
-    {"Top_L3_N3", 4709},
-    {"Top_L3_N2", 4710},
-    {"Top_L3_N1", 4711},
+    {"Top_L3_N4", 4795},
+    {"Top_L3_N3", 4735},
+    {"Top_L3_N2", 4713},
+    {"Top_L3_N1", 4719},
 
     // Bottom - L1
-    {"Bottom_L1_N4", 4712},
-    {"Bottom_L1_N3", 4713},
-    {"Bottom_L1_N2", 4714},
-    {"Bottom_L1_N1", 4715},
+    {"Bottom_L1_N4", 4625},
+    {"Bottom_L1_N3", 4715},
+    {"Bottom_L1_N2", 4663},
+    {"Bottom_L1_N1", 4641},
 
     // Bottom - L2
-    {"Bottom_L2_N1", 4716},
-    {"Bottom_L2_N2", 4717},
-    {"Bottom_L2_N3", 4718},
-    {"Bottom_L2_N4", 4719},
+    {"Bottom_L2_N1", 4637},
+    {"Bottom_L2_N2", 4668},
+    {"Bottom_L2_N3", 4620},
+    {"Bottom_L2_N4", 4647},
 
     // Bottom - L3
-    {"Bottom_L3_N4", 4720},
-    {"Bottom_L3_N3", 4721},
-    {"Bottom_L3_N2", 4722},
-    {"Bottom_L3_N1", 4723},
+    {"Bottom_L3_N4", 4684},
+    {"Bottom_L3_N3", 4700},
+    {"Bottom_L3_N2", 4732},
+    {"Bottom_L3_N1", 4748},
 
     // Right - L1
-    {"Right_L1_N3", 4724},
-    {"Right_L1_N2", 4725},
-    {"Right_L1_N1", 4726},
+    {"Right_L1_N3", 4791},
+    {"Right_L1_N2", 4781},
+    {"Right_L1_N1", 4884},
 
     // Right - L2
-    {"Right_L2_N3", 4727},
-    {"Right_L2_N2", 4728},
-    {"Right_L2_N1", 4729},
+    {"Right_L2_N3", 4769},
+    {"Right_L2_N2", 4812},
+    {"Right_L2_N1", 4785},
 
     // Right - L3
-    {"Right_L3_N3", 4730},
-    {"Right_L3_N2", 4731},
-    {"Right_L3_N1", 4732},
+    {"Right_L3_N3", 4900},
+    {"Right_L3_N2", 4728},
+    {"Right_L3_N1", 4807},
 
     // Left - L1
-    {"Left_L1_N3", 4733},
-    {"Left_L1_N2", 4734},
-    {"Left_L1_N1", 4735},
+    {"Left_L1_N3", 4876},
+    {"Left_L1_N2", 4844},
+    {"Left_L1_N1", 4828},
 
     // Left - L2
-    {"Left_L2_N3", 4736},
-    {"Left_L2_N2", 4737},
-    {"Left_L2_N1", 4738},
+    {"Left_L2_N3", 4872},
+    {"Left_L2_N2", 4814},
+    {"Left_L2_N1", 4888},
 
     // Left - L3
-    {"Left_L3_N3", 4739},
-    {"Left_L3_N2", 4740},
-    {"Left_L3_N1", 4741},
+    {"Left_L3_N3", 4901},
+    {"Left_L3_N2", 4902},
+    {"Left_L3_N1", 4853},
 
     // Back - L1
-    {"Back_L1_N1", 4742},
-    {"Back_L1_N2", 4743},
-    {"Back_L1_N3", 4744},
+    {"Back_L1_N1", 4628},
+    {"Back_L1_N2", 4633},
+    {"Back_L1_N3", 4651},
 
     // Back - L2
-    {"Back_L2_N1", 4745},
-    {"Back_L2_N2", 4746},
-    {"Back_L2_N3", 4747},
+    {"Back_L2_N1", 4660},
+    {"Back_L2_N2", 4656},
+    {"Back_L2_N3", 4616},
 
     // Back - L3
-    {"Back_L3_N1", 4748},
-    {"Back_L3_N2", 4749},
-    {"Back_L3_N3", 4750},
+    {"Back_L3_N1", 4760},
+    {"Back_L3_N2", 4697},
+    {"Back_L3_N3", 4672},
 
     // Front - L1
-    {"Front_L1_N3", 4751},
-    {"Front_L1_N2", 4752},
-    {"Front_L1_N1", 4753},
+    {"Front_L1_N3", 4820},
+    {"Front_L1_N2", 4804},
+    {"Front_L1_N1", 4772},
 
     // Front - L2
-    {"Front_L2_N3", 4754},
-    {"Front_L2_N2", 4755},
-    {"Front_L2_N1", 4756},
+    {"Front_L2_N3", 4756},
+    {"Front_L2_N2", 4800},
+    {"Front_L2_N1", 4777},
 
     // Front - L3
-    {"Front_L3_N3", 4757},
-    {"Front_L3_N2", 4758},
-    {"Front_L3_N1", 4759}
+    {"Front_L3_N3", 4903},
+    {"Front_L3_N2", 4676},
+    {"Front_L3_N1", 4816}
 };
 
 std::optional<double> extractLength(const std::string& input) {
