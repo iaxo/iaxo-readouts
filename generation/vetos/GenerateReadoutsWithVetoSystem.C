@@ -102,7 +102,7 @@ std::map<string, int> aliasToSignalId = {
 
     // Left - L2
     {"Left_L2_N3", 4872},
-    {"Left_L2_N2", 4814},
+    {"Left_L2_N2", 4849},
     {"Left_L2_N1", 4888},
 
     // Left - L3
