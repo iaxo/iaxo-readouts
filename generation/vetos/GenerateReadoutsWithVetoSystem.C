@@ -45,100 +45,100 @@ std::map<string, int> referenceVetoNameToDaqId;
 
 std::map<string, int> aliasToSignalId = {
     // Top - L1
-    {"Top_L1_N4", 4692},
-    {"Top_L1_N3", 4740},
-    {"Top_L1_N2", 4709},
-    {"Top_L1_N1", 4723},
+    {"Top_L1_N4", 4692},    //V23
+    {"Top_L1_N3", 4740},    //V58
+    {"Top_L1_N2", 4709},    //V16
+    {"Top_L1_N1", 4723},    //V5
 
     // Top - L2
-    {"Top_L2_N1", 4688},
-    {"Top_L2_N2", 4744},
-    {"Top_L2_N3", 4705},
-    {"Top_L2_N4", 4867},
+    {"Top_L2_N1", 4688},    //V2
+    {"Top_L2_N2", 4744},    //V21
+    {"Top_L2_N3", 4705},    //V20
+    {"Top_L2_N4", 4900},    //VXXX
 
     // Top - L3
-    {"Top_L3_N4", 4795},
-    {"Top_L3_N3", 4735},
-    {"Top_L3_N2", 4713},
-    {"Top_L3_N1", 4719},
+    {"Top_L3_N4", 4901},    //VXXX
+    {"Top_L3_N3", 4735},    //V15
+    {"Top_L3_N2", 4713},    //V42
+    {"Top_L3_N1", 4719},    //V35
 
     // Bottom - L1
-    {"Bottom_L1_N4", 4625},
-    {"Bottom_L1_N3", 4715},
-    {"Bottom_L1_N2", 4663},
-    {"Bottom_L1_N1", 4641},
+    {"Bottom_L1_N4", 4625},    //V45
+    {"Bottom_L1_N3", 4715},    //V38
+    {"Bottom_L1_N2", 4663},    //V26
+    {"Bottom_L1_N1", 4641},    //V17
 
     // Bottom - L2
-    {"Bottom_L2_N1", 4637},
-    {"Bottom_L2_N2", 4668},
-    {"Bottom_L2_N3", 4620},
-    {"Bottom_L2_N4", 4647},
+    {"Bottom_L2_N1", 4637},    //V51
+    {"Bottom_L2_N2", 4668},    //V61
+    {"Bottom_L2_N3", 4620},    //V48
+    {"Bottom_L2_N4", 4647},    //V4
 
     // Bottom - L3
-    {"Bottom_L3_N4", 4684},
-    {"Bottom_L3_N3", 4700},
-    {"Bottom_L3_N2", 4732},
-    {"Bottom_L3_N1", 4748},
+    {"Bottom_L3_N4", 4684},    //V49
+    {"Bottom_L3_N3", 4700},    //V47
+    {"Bottom_L3_N2", 4732},    //V11
+    {"Bottom_L3_N1", 4748},    //V13
 
     // Right - L1
-    {"Right_L1_N3", 4791},
-    {"Right_L1_N2", 4781},
-    {"Right_L1_N1", 4884},
+    {"Right_L1_N3", 4791},    //V55
+    {"Right_L1_N2", 4728},    //V53
+    {"Right_L1_N1", 4884},    //V7
 
     // Right - L2
-    {"Right_L2_N3", 4769},
-    {"Right_L2_N2", 4812},
-    {"Right_L2_N1", 4785},
+    {"Right_L2_N3", 4769},    //V59
+    {"Right_L2_N2", 4812},    //V6
+    {"Right_L2_N1", 4785},    //V40
 
     // Right - L3
-    {"Right_L3_N3", 4900},
-    {"Right_L3_N2", 4728},
-    {"Right_L3_N1", 4807},
+    {"Right_L3_N3", 4836},    //V52
+    {"Right_L3_N2", 4781},    //V1
+    {"Right_L3_N1", 4807},    //V41
 
     // Left - L1
-    {"Left_L1_N3", 4876},
-    {"Left_L1_N2", 4844},
-    {"Left_L1_N1", 4828},
+    {"Left_L1_N3", 4876},    //V22
+    {"Left_L1_N2", 4844},    //V9
+    {"Left_L1_N1", 4853},    //V50
 
     // Left - L2
-    {"Left_L2_N3", 4872},
-    {"Left_L2_N2", 4849},
-    {"Left_L2_N1", 4888},
+    {"Left_L2_N3", 4872},    //V12
+    {"Left_L2_N2", 4849},    //V60
+    {"Left_L2_N1", 4888},    //V39
 
     // Left - L3
-    {"Left_L3_N3", 4901},
-    {"Left_L3_N2", 4902},
-    {"Left_L3_N1", 4853},
+    {"Left_L3_N3", 4892},    //V57
+    {"Left_L3_N2", 4867},    //V54
+    {"Left_L3_N1", 4828},    //V14
 
     // Back - L1
-    {"Back_L1_N1", 4628},
-    {"Back_L1_N2", 4633},
-    {"Back_L1_N3", 4651},
+    {"Back_L1_N1", 4628},    //V24
+    {"Back_L1_N2", 4633},    //V27
+    {"Back_L1_N3", 4651},    //V31
 
     // Back - L2
-    {"Back_L2_N1", 4660},
-    {"Back_L2_N2", 4656},
-    {"Back_L2_N3", 4616},
+    {"Back_L2_N1", 4660},    //V33
+    {"Back_L2_N2", 4656},    //V44
+    {"Back_L2_N3", 4616},    //V43
 
     // Back - L3
-    {"Back_L3_N1", 4760},
-    {"Back_L3_N2", 4697},
-    {"Back_L3_N3", 4672},
+    {"Back_L3_N1", 4760},    //V32
+    {"Back_L3_N2", 4697},    //V18
+    {"Back_L3_N3", 4672},    //V37
 
     // Front - L1
-    {"Front_L1_N3", 4820},
-    {"Front_L1_N2", 4804},
-    {"Front_L1_N1", 4772},
+    {"Front_L1_N3", 4902},    //VXXX
+    {"Front_L1_N2", 4903},    //VXXX
+    {"Front_L1_N1", 4820},    //V25
 
     // Front - L2
-    {"Front_L2_N3", 4756},
-    {"Front_L2_N2", 4800},
-    {"Front_L2_N1", 4777},
+    {"Front_L2_N3", 4904},    //VXXX
+    {"Front_L2_N2", 4905},    //VXXX
+    {"Front_L2_N1", 4756},    //V8
 
     // Front - L3
-    {"Front_L3_N3", 4903},
-    {"Front_L3_N2", 4676},
-    {"Front_L3_N1", 4816}
+    {"Front_L3_N3", 4906},    //VXXX
+    {"Front_L3_N2", 4907},    //VXXX
+    {"Front_L3_N1", 4816},    //V34
 };
 
 std::optional<double> extractLength(const std::string& input) {
